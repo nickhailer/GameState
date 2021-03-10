@@ -2,8 +2,8 @@ package com.example.JudgeCard;
 
 public class JudgeCard implements Card {
 
-    int manaLimit;
-    String judgementType;
-    ArrayList<String> disallowedSpellTypes;
+    public int manaLimit;
+    public String judgementType;
+    public ArrayList<String> disallowedSpellTypes;
 
 }

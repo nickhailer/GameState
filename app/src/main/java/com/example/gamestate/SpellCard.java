@@ -2,11 +2,11 @@ package com.example.SpellCard;
 
 public class SpellCard implements Card {
 
-    private int mana;
-    private int powerMod;
+    public int mana;
+    public int powerMod;
     //if this is empty show the powerMod instead
-    private String cardText;
-    private String spellType;
-    private boolean isForbidden;
+    public String cardText;
+    public String spellType;
+    public boolean isForbidden;
 
 }

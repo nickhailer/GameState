@@ -2,8 +2,9 @@ package com.example.FighterCard;
 
 public class FighterCard implements Card {
 
-    private int power;
-    private int prizeMoney;
-    private boolean isUndead;
+    public int power;
+    public int prizeMoney;
+    public boolean isUndead;
+    public ArrayList<SpellCards> spells;
 
 }
