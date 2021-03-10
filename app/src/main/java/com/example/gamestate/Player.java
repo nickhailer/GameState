@@ -38,4 +38,6 @@ public class Player extends GameState{
         numSpellCards = original.numSpellCards;
     }
 
+
+
 }
