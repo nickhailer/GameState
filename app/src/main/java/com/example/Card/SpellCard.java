@@ -1,6 +1,6 @@
-package com.example.SpellCard;
+package com.example.Card;
 
-public class SpellCard implements Card {
+public class SpellCard extends Card {
 
     public int mana;
     public int powerMod;

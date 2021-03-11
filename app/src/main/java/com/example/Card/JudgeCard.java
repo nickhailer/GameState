@@ -1,6 +1,8 @@
-package com.example.JudgeCard;
+package com.example.Card;
 
-public class JudgeCard implements Card {
+import java.util.ArrayList;
+
+public class JudgeCard extends Card {
 
     public int manaLimit;
     public String judgementType;

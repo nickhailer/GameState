@@ -1,5 +1,9 @@
 package com.example.gamestate;
 
+import com.example.Card.*;
+import java.util.ArrayList;
+import java.util.Random;
+
 public class GameState {
 
     public ArrayList<FighterCard> currFighters;
@@ -16,16 +20,14 @@ public class GameState {
 
     }
 
-    public FighterCard drawFighterCard(){
-        return fighterDeck.remove(randGet.nextInt(fighterDeck.size()));
-    }
+    public FighterCard drawFighterCard() { return fighterDeck.remove(randGen.nextInt(fighterDeck.size())); }
 
     public SpellCard drawSpellCard(){
-        return spellDeck.remove(randGet.nextInt(spellDeck.size()));
+        return spellDeck.remove(randGen.nextInt(spellDeck.size()));
     }
 
     public JudgeCard drawJudgeCard(){
-        return judgeDeck.remove(randGet.nextInt(judgeDeck.size()));
+        return judgeDeck.remove(randGen.nextInt(judgeDeck.size()));
     }
 
 }
