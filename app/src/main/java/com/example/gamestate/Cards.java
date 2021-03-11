@@ -10,6 +10,7 @@ public class Cards {
     protected String[] esCards;      // Enchanted Spell Card Deck
     protected String[] ssCards;      // Support Spell Card Deck
     protected String[] fsCards;      // Forbidden Spell Card Deck
+    
 
     public Cards(){
         fighterCards = new String[] {"Goblin", "Orc", "Skeleton", "Lizardman", "Ghost",

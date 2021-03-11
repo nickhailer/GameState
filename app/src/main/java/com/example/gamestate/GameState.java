@@ -7,6 +7,9 @@ import java.util.Random;
 public class GameState {
 
     public int roundNum;
+    // 1 = player 1, 2 player 2, etc.
+    // -1 = setup phase, -2 = judge phase
+    public int playerTurn;
     public ArrayList<FighterCard> currFighters;
     public JudgeCard currJudge;
     public ArrayList<Player> players;
@@ -17,10 +20,11 @@ public class GameState {
 
     private Random randGen = new Random();
 
-    public GameState(int roundNum, ArrayList<FighterCard> currFighters, JudgeCard currJudge, ArrayList<Player> players,
+    public GameState(int roundNum, int playerTurn, ArrayList<FighterCard> currFighters, JudgeCard currJudge, ArrayList<Player> players,
                      ArrayList<FighterCard> fighterDeck, ArrayList<SpellCard> spellDeck,ArrayList<JudgeCard> judgeDeck,
                      ArrayList<Card> discardPile){
         this.roundNum = roundNum;
+        this.playerTurn = playerTurn;
         this.currFighters = currFighters;
         this.currJudge = currJudge;
         this.players = players;
