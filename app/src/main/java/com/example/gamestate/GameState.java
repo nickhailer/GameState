@@ -16,8 +16,16 @@ public class GameState {
 
     private Random randGen = new Random();
 
-    public GameState(){
-
+    public GameState(ArrayList<FighterCard> currFighters, JudgeCard currJudge, ArrayList<Player> players,
+                     ArrayList<FighterCard> fighterDeck, ArrayList<SpellCard> spellDeck,ArrayList<JudgeCard> judgeDeck,
+                     ArrayList<Card> discardPile){
+        this.currFighters = currFighters;
+        this.currJudge = currJudge;
+        this.players = players;
+        this.fighterDeck = fighterDeck;
+        this.spellDeck = spellDeck;
+        this.judgeDeck = judgeDeck;
+        this.discardPile = discardPile;
     }
 
     public FighterCard drawFighterCard() { return fighterDeck.remove(randGen.nextInt(fighterDeck.size())); }

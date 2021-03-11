@@ -2,7 +2,7 @@ package com.example.gamestate;
 
 import android.location.GnssAntennaInfo;
 
-public class Cards extends GameState {
+public class Cards {
     // Instance Variables
     protected String[] fighterCards; // Fighter Card Deck
     protected String[] judgeCards;   // Judge Card Deck
