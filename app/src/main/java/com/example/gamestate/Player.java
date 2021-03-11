@@ -1,35 +1,35 @@
 package com.example.gamestate;
 
-public class Player extends GameState{
+import com.example.Card.SpellCard;
+
+import java.util.ArrayList;
+
+public class Player{
+
     // Instance Variables
     protected String name;
     protected int coins;
-    protected int bets;
-    protected int playerTurn;
-    protected int numSpellCards;
+    protected ArrayList<Integer> bets;
+    //What does this do??
+    //protected int playerTurn;
+    public boolean isTheirTurn;
+    public ArrayList<SpellCard> hand;
 
     /**
      * Constructor for objects of class Player
      */
-    public Player() {
-        name = "Player 1";
-
-        // Make it player 1's turn
-        playerTurn = 1;
-
-        // Players start with two coins
-        coins = 2;
-
-        // Nobody starts with bets
-        bets = 0;
-
-        // Players start with 8 spell cards
-        numSpellCards = 8;
+    public Player(String name, int coins, ArrayList<Integer> bets, boolean isTheirTurn, ArrayList<SpellCard> hand) {
+        this.name = name;
+        this.coins = coins;
+        this.bets = bets;
+        this.isTheirTurn = isTheirTurn;
+        this.hand = hand;
     }
 
     /**
      * Copy constructor for class Player
      */
+    /*
     public Player(Player original) {
         name = original.name;
         playerTurn = original.playerTurn;
@@ -37,7 +37,6 @@ public class Player extends GameState{
         bets = original.bets;
         numSpellCards = original.numSpellCards;
     }
-
-
+    */
 
 }
