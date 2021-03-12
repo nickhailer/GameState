@@ -34,6 +34,18 @@ public class GameState {
         this.discardPile = discardPile;
     }
 
+    public GameState(GameState original) {
+        roundNum = original.roundNum;
+        playerTurn = original.playerTurn;
+        currFighters = original.currFighters;
+        currJudge = original.currJudge;
+        players = original.players;
+        fighterDeck = original.fighterDeck;
+        spellDeck = original.spellDeck;
+        judgeDeck = original.judgeDeck;
+        discardPile = original.discardPile;
+    }
+
     public FighterCard drawFighterCard() { return fighterDeck.remove(randGen.nextInt(fighterDeck.size())); }
 
     public SpellCard drawSpellCard(){

@@ -12,8 +12,8 @@ public class Player{
     protected ArrayList<Integer> bets;
     public boolean isTheirTurn;
     public ArrayList<SpellCard> hand;
-    GameState playerPerspective = new GameState(name, isTheirTurn, coins, bets, hand);
-    Player original;
+    GameState playerPerspective;
+
 
     /**
      * Constructor for objects of class Player
