@@ -10,10 +10,10 @@ public class Player{
     protected String name;
     protected int coins;
     protected ArrayList<Integer> bets;
-    //What does this do??
-    //protected int playerTurn;
     public boolean isTheirTurn;
     public ArrayList<SpellCard> hand;
+    GameState playerPerspective = new GameState(name, isTheirTurn, coins, bets, hand);
+    Player original;
 
     /**
      * Constructor for objects of class Player
@@ -32,11 +32,11 @@ public class Player{
     /*
     public Player(Player original) {
         name = original.name;
-        playerTurn = original.playerTurn;
+        isTheirTurn = original.isTheirTurn;
         coins = original.coins;
         bets = original.bets;
         numSpellCards = original.numSpellCards;
     }
-    */
+*/
 
 }
