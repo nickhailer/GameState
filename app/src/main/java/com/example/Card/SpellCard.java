@@ -15,7 +15,7 @@ public class SpellCard extends Card {
     public char targetType;
 
     public SpellCard(String name, ArrayList<Boolean> isFaceUp, int mana, int powerMod,
-                     String cardText, char spellType, boolean isForbidden){
+                     String cardText, char spellType, boolean isForbidden) {
         //adds attributes of spell cards
         super(name, isFaceUp);
         this.mana = mana;
@@ -27,7 +27,7 @@ public class SpellCard extends Card {
     }
 
     public SpellCard(String name, ArrayList<Boolean> isFaceUp, int mana, int powerMod,
-                     String cardText, char spellType, boolean isForbidden, char targetType){
+                     String cardText, char spellType, boolean isForbidden, char targetType) {
         super(name, isFaceUp);
         this.mana = mana;
         this.powerMod = powerMod;
@@ -36,5 +36,4 @@ public class SpellCard extends Card {
         this.isForbidden = isForbidden;
         this.targetType = targetType;
     }
-
 }

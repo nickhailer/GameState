@@ -9,7 +9,7 @@ public class Card {
     public ArrayList<Boolean> isFaceUp;
     public String name;
 
-    public Card(String name, ArrayList<Boolean> isFaceUp){
+    public Card(String name, ArrayList<Boolean> isFaceUp) {
         //general attributes of all cards
         this.name = name;
         this.isFaceUp = isFaceUp;

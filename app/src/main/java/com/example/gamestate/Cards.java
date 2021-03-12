@@ -42,6 +42,7 @@ public class Cards {
             spellCards.add(new SpellCard("Haste", faceUp, 6, 4, "", 'e', false));
             spellCards.add(new SpellCard("Healing", faceUp, 1, 4, "", 'd', false));
         }
+
         ArrayList<Character> disallowedSpells = new ArrayList<Character>();
         disallowedSpells.add('s');
         disallowedSpells.add('f');
@@ -59,5 +60,4 @@ public class Cards {
     }
 
     public Cards(){}
-
 }

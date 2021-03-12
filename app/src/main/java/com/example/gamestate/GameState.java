@@ -25,13 +25,15 @@ public class GameState {
     private int passCounter;
     private Random randGen = new Random();
 
-    public GameState(ArrayList<Player> players){
+    public GameState(ArrayList<Player> players) {
         this.decks = new Cards(players.size());
         this.roundNum = 0;
+
         while(this.fighters.size() < 5) {
             FighterCard fCards= drawFighterCard();
             this.fighters.add(fCards);
         }
+
         this.playerTurn = -1;
         this.players = players;
         this.judge = drawJudgeCard();
@@ -56,7 +58,7 @@ public class GameState {
         SpellCard attSpell;
 
         //Iterates through each fighter in the original fighters
-        for(int i = 0; i < original.fighters.size(); i++){
+        for(int i = 0; i < original.fighters.size(); i++) {
 
             origFighter = original.fighters.get(i);
 
@@ -65,18 +67,18 @@ public class GameState {
                     origFighter.prizeMoney, origFighter.isUndead);
 
             //Iterates through each spell on the original fighter
-            for(int j = 0; j < origFighter.spells.size(); j++){
+            for(int j = 0; j < origFighter.spells.size(); j++) {
                 attSpell = origFighter.spells.get(i);
 
                 //Attaches face up spells regularly
-                if(attSpell.isFaceUp.get(idx)){
+                if(attSpell.isFaceUp.get(idx)) {
                     newFighter.spells.add(new SpellCard(attSpell.name, new ArrayList<Boolean>() {{ add(true); }},
                             attSpell.mana, attSpell.powerMod, attSpell.cardText, attSpell.spellType,
                             attSpell.isForbidden));
                 }
 
                 //Attaches face down spells with a placeholder obj
-                else{
+                else {
                     newFighter.spells.add(new SpellCard("Unknown", new ArrayList<Boolean>() {{ add(false); }},
                             0, 0, "", ' ', false));
                 }
@@ -90,7 +92,7 @@ public class GameState {
         judge = new JudgeCard(original.judge.name, original.players.size(), original.judge.manaLimit,
                 original.judge.judgementType, new ArrayList<Character>());
         //Copies over the disallowedSpells array to the new judge
-        for(int i = 0; i < original.judge.disallowedSpells.size(); i++){
+        for(int i = 0; i < original.judge.disallowedSpells.size(); i++) {
             judge.disallowedSpells.add(original.judge.disallowedSpells.get(i));
         }
 
@@ -103,13 +105,13 @@ public class GameState {
         SpellCard origSpell;
 
         //Iterates through list of players
-        for(int i = 0; i < original.players.size(); i++){
+        for(int i = 0; i < original.players.size(); i++) {
 
             //Gets the original player
             origPlayer = original.players.get(i);
 
             //If it's your player add them normally
-            if(i == idx){
+            if(i == idx) {
 
                 //Initializes your player
                 newPlayer = new Player(origPlayer.name, origPlayer.coins);
@@ -120,7 +122,7 @@ public class GameState {
                 }
 
                 //Adds your player's spell cards to their hand
-                for(int j = 0; j < origPlayer.hand.size(); i++){
+                for(int j = 0; j < origPlayer.hand.size(); i++) {
                     origSpell = origPlayer.hand.get(i);
                     newPlayer.hand.add(new SpellCard(origSpell.name, new ArrayList<Boolean>() {{ add(true); }},
                             origSpell.mana, origSpell.powerMod, origSpell.cardText, origSpell.spellType,
@@ -129,7 +131,7 @@ public class GameState {
             }
 
             //Otherwise add them with limited information
-            else{
+            else {
 
                 //Initializes the new player
                 newPlayer = new Player(origPlayer.name, origPlayer.coins);
@@ -140,7 +142,7 @@ public class GameState {
                 }
 
                 //Adds the player's spell cards to their hand
-                for(int j = 0; j < origPlayer.hand.size(); j++){
+                for(int j = 0; j < origPlayer.hand.size(); j++) {
                     newPlayer.hand.add(new SpellCard("Unknown", new ArrayList<Boolean>() {{ add(false); }},
                             0, 0, "", ' ', false));
                 }
@@ -154,15 +156,15 @@ public class GameState {
         decks = new Cards();
 
         //Adds place holder cards to each deck
-        for(int i = 0; i < original.decks.fighterCards.size(); i++){
+        for(int i = 0; i < original.decks.fighterCards.size(); i++) {
             decks.fighterCards.add(new FighterCard("Unknown", 0, 0, 0,
                     false));
         }
-        for(int i = 0; i < original.decks.spellCards.size(); i++){
+        for(int i = 0; i < original.decks.spellCards.size(); i++) {
             decks.spellCards.add(new SpellCard("Unknown", new ArrayList<Boolean>() {{ add(false); }},
                     0, 0, "", ' ', false));
         }
-        for(int i = 0; i < original.decks.judgeCards.size(); i++){
+        for(int i = 0; i < original.decks.judgeCards.size(); i++) {
             decks.judgeCards.add(new JudgeCard("Unknown", 0, 0, ' ',
                     new ArrayList<>()));
         }
@@ -172,24 +174,24 @@ public class GameState {
 
         //Iterates through each card in the original discard pile
         Card discardedCard;
-        for(int i = 0; i < original.discardPile.size(); i++){
+        for(int i = 0; i < original.discardPile.size(); i++) {
 
             //gets original card
             discardedCard = original.discardPile.get(i);
 
             //Determines which type of card to correctly add it
-            if(discardedCard instanceof FighterCard){
+            if(discardedCard instanceof FighterCard) {
                 discardPile.add(new FighterCard(discardedCard.name, original.players.size(),
                         ((FighterCard) discardedCard).power, ((FighterCard) discardedCard).prizeMoney,
                         ((FighterCard) discardedCard).isUndead));
             }
-            else if(discardedCard instanceof SpellCard){
+            else if(discardedCard instanceof SpellCard) {
                 discardPile.add(new SpellCard(discardedCard.name, new ArrayList<Boolean>(){{ add(true); }},
                         ((SpellCard) discardedCard).mana, ((SpellCard) discardedCard).powerMod,
                         ((SpellCard) discardedCard).cardText, ((SpellCard) discardedCard).spellType,
                         ((SpellCard) discardedCard).isForbidden, ((SpellCard) discardedCard).targetType));
             }
-            else if(discardedCard instanceof JudgeCard){
+            else if(discardedCard instanceof JudgeCard) {
                 discardPile.add(new JudgeCard(discardedCard.name, original.players.size(),
                         ((JudgeCard) discardedCard).manaLimit, ((JudgeCard) discardedCard).judgementType,
                         new ArrayList<Character>()));
@@ -199,131 +201,134 @@ public class GameState {
                 }
             }
         }
-
     }
 
-    public String toString(){
+    public String toString() {
         String s = "";
 
         //Prints the current round of the game
         s += "It is round " + roundNum + " and ";
-        if(playerTurn == -1){
+        if(playerTurn == -1) {
             s += "the players are currently placing their bets.\n";
         }
-        else if(playerTurn == -2){
+        else if(playerTurn == -2) {
             s += "the players are currently deciding which cards to discard.\n";
         }
-        else{
+        else {
             s += "it is currently " + players.get(playerTurn).name + "'s turn";
         }
         s += "\n";
 
         //Prints information about the fighters currently in play
         FighterCard f;
-        for(int i = 0; i < 5; i++){
+        for(int i = 0; i < 5; i++) {
             f = fighters.get(i);
             s += f.name + " has a power of " + f.power + " and has a prize of " + f.prizeMoney + ".\n" +
                     "They also have the following spells attached to them: ";
             if(f.spells.size() == 0){
                 s += "Nothing\n";
             }
-            for(int j = 0; j < f.spells.size(); j++){
+            for(int j = 0; j < f.spells.size(); j++) {
                 s += f.spells.get(j).name + ", ";
-                if(j == f.spells.size() - 1){
+                if(j == f.spells.size() - 1) {
                     s += ".\n";
                 }
-                else{
+                else {
                     s += ", ";
                 }
             }
         }
+
         s += "\n";
 
         //Prints information about the judge currently in play
         s += "The judge currently in play is " + judge.name + ", they have a mana limit of " + judge.manaLimit +
                 ", and their judgement type is ";
-        if(judge.judgementType == 'd'){
+        if(judge.judgementType == 'd') {
             s += "dispel";
         }
-        else if(judge.judgementType == 'e'){
+        else if(judge.judgementType == 'e') {
             s += "eject";
         }
         s += ".\n The spell types they disallow are: ";
-        for(int i = 0; i < judge.disallowedSpells.size(); i++){
-            if(i == judge.disallowedSpells.size() - 1){
+        for(int i = 0; i < judge.disallowedSpells.size(); i++) {
+            if(i == judge.disallowedSpells.size() - 1) {
                 s += "and ";
             }
-            if(judge.disallowedSpells.get(i) == 'd'){
+            if(judge.disallowedSpells.get(i) == 'd') {
                 s += "direct";
             }
-            else if(judge.disallowedSpells.get(i) == 'e'){
+            else if(judge.disallowedSpells.get(i) == 'e') {
                 s += "enchant";
             }
-            else if(judge.disallowedSpells.get(i) == 's'){
+            else if(judge.disallowedSpells.get(i) == 's') {
                 s += "support";
             }
-            else if(judge.disallowedSpells.get(i) == 'f'){
+            else if(judge.disallowedSpells.get(i) == 'f') {
                 s += "forbidden";
             }
-            if(i == judge.disallowedSpells.size() - 1){
+            if(i == judge.disallowedSpells.size() - 1) {
                 s += ".\n";
             }
             else {
                 s += ", ";
             }
         }
+
         s += "\n";
 
         //Prints information about each player
         Player p;
-        for(int i = 0; i < players.size(); i++){
+        for(int i = 0; i < players.size(); i++) {
             p = players.get(i);
             s += p.name + " has " + p.coins + " coins and bet on the ";
-            if(p.bets.size() == 0){
+            if(p.bets.size() == 0) {
                 s += "Nothing\n";
             }
-            for(int j = 0; j < p.bets.size(); j++){
+            for(int j = 0; j < p.bets.size(); j++) {
                 s += fighters.get(j).name;
-                if(j == p.bets.size() - 1){
+                if(j == p.bets.size() - 1) {
                     s += ".\n";
                 }
-                else{
+                else {
                     s += ", ";
                 }
             }
 
             s += "In their hand they have the following spells: ";
-            if(p.hand.size() == 0){
+            if(p.hand.size() == 0) {
                 s += "Nothing\n";
             }
-            for(int j = 0; j < p.hand.size(); j++){
+            for(int j = 0; j < p.hand.size(); j++) {
                 s += p.hand.get(j).name;
-                if(j == p.hand.size() - 1){
+                if(j == p.hand.size() - 1) {
                     s += ".\n";
                 }
-                else{
+                else {
                     s += ", ";
                 }
             }
         }
+
         s += "\n";
 
         //Prints the cards in the discard pile
         s += "The discard pile has the following cards: ";
-        if(discardPile.size() == 0){
+        if(discardPile.size() == 0) {
             s += "Nothing\n";
         }
-        for(int i = 0; i < discardPile.size(); i++){
+        for(int i = 0; i < discardPile.size(); i++) {
             s += discardPile.get(i).name;
-            if(i == discardPile.size() - 1){
+            if(i == discardPile.size() - 1) {
                 s += ".\n";
             }
-            else{
+            else {
                 s += ", ";
             }
         }
 
         return s;
+
     }
 
     public boolean placeBets(int idx, ArrayList<Integer> bets) {
@@ -332,8 +337,8 @@ public class GameState {
         }
         players.get(idx).bets = bets;
         //Checks if all players have placed their bets
-        for(int i = 0; i < players.size(); i++){
-            if(players.get(i).bets.size() == 0){
+        for(int i = 0; i < players.size(); i++) {
+            if(players.get(i).bets.size() == 0) {
                 return true;
             }
         }
@@ -350,32 +355,32 @@ public class GameState {
             return false;
         }
         //Checks if you have the spell in your hand
-        if(spell >= players.get(idx).hand.size() && spell < 0){
+        if(spell >= players.get(idx).hand.size() && spell < 0) {
             return false;
         }
         //Checks if target is valid
-        if(players.get(idx).hand.get(spell).targetType == 'f' ){
+        if(players.get(idx).hand.get(spell).targetType == 'f') {
             if(target < 1 || target > 5){
                 return false;
             }
         }
-        else if(players.get(idx).hand.get(spell).targetType == 'j'){
+        else if(players.get(idx).hand.get(spell).targetType == 'j') {
             if(target != 0) {
                 return false;
             }
         }
-        else if(players.get(idx).hand.get(spell).targetType == 'p' && target >= 6){
+        else if(players.get(idx).hand.get(spell).targetType == 'p' && target >= 6) {
             if(target < 6) {
                 return false;
             }
         }
-        else if(players.get(idx).hand.get(spell).targetType == 's'){
+        else if(players.get(idx).hand.get(spell).targetType == 's') {
             if(target < 100 || target % 100 < 1 || target % 100 > 5) {
                 return false;
             }
         }
         //Attaches card to the target
-        if(target >= 1 && target <= 5){
+        if(target >= 1 && target <= 5) {
             fighters.get(target).spells.add(players.get(idx).hand.get(spell));
         }
         //Removes card from your hand
@@ -392,8 +397,8 @@ public class GameState {
             return false;
         }
         //Checks if you have the cards to discard
-        for(int i = 0; i < cards.size(); i++){
-            if(cards.get(i) < 0 || cards.get(i) > players.get(idx).hand.size()){
+        for(int i = 0; i < cards.size(); i++) {
+            if(cards.get(i) < 0 || cards.get(i) > players.get(idx).hand.size()) {
                 return false;
             }
         }
@@ -406,7 +411,7 @@ public class GameState {
         }
         //If every player has discarded go onto next phase
         discardCounter++;
-        if(discardCounter == players.size()){
+        if(discardCounter == players.size()) {
             resetPhase();
             discardCounter = 0;
             playerTurn = -1;
@@ -415,28 +420,28 @@ public class GameState {
     }
 
     //Resets the game for the next rounds
-    public void resetPhase(){
+    public void resetPhase() {
 
         //Fills each players hand
         int handSize;
-        if(players.size() == 6){
+        if(players.size() == 6) {
             handSize = 5;
         }
-        if(players.size() == 5){
+        if(players.size() == 5) {
             handSize = 6;
         }
-        else{
+        else {
             handSize = 8;
         }
-        for(int i = 0; i < players.size(); i++){
-            while(players.get(i).hand.size() < handSize){
+        for(int i = 0; i < players.size(); i++) {
+            while(players.get(i).hand.size() < handSize) {
                 players.get(i).hand.add(drawSpellCard());
             }
         }
 
         //Recycles fighter cards from discard pile
-        for(int i = 0; i < discardPile.size(); i++){
-            if(discardPile.get(i) instanceof FighterCard){
+        for(int i = 0; i < discardPile.size(); i++) {
+            if(discardPile.get(i) instanceof FighterCard) {
                 decks.fighterCards.add((FighterCard) discardPile.remove(i));
             }
         }
@@ -451,7 +456,7 @@ public class GameState {
             return false;
         }
         passCounter += 1;
-        if(passCounter == players.size()){
+        if(passCounter == players.size()) {
             passCounter = 0;
             combatPhase();
             playerTurn = -2;
@@ -460,21 +465,21 @@ public class GameState {
     }
 
     //simulates combat between the fighters
-    public void combatPhase(){
+    public void combatPhase() {
 
         //Checks the mana on each fighter
         int totalMana;
-        for(int i = 0; i < fighters.size(); i++){
+        for(int i = 0; i < fighters.size(); i++) {
             totalMana = 0;
-            for(int j = 0; j < fighters.get(i).spells.size(); j++){
+            for(int j = 0; j < fighters.get(i).spells.size(); j++) {
                 totalMana += fighters.get(i).spells.get(j).mana;
                 //Applies the judge's judgement
-                if(totalMana > judge.manaLimit){
-                    if(judge.judgementType == 'd'){
+                if(totalMana > judge.manaLimit) {
+                    if(judge.judgementType == 'd') {
                         fighters.get(i).spells = new ArrayList<>();
                     }
                     //Ejects the fighter by replacing them with a filler card and discarding them
-                    else if(judge.judgementType == 'e'){
+                    else if(judge.judgementType == 'e') {
                         discardPile.add(fighters.get(i));
                         fighters.set(i, new FighterCard("Empty", 0, -99,
                                 0, false));
@@ -486,29 +491,29 @@ public class GameState {
         //Finds the fighter with the highest power
         int winningFighter = 0;
         int highestPower = 0;
-        for(int i = 0; i < fighters.size(); i++){
-            if(highestPower < fighters.get(i).calcPower()){
+        for(int i = 0; i < fighters.size(); i++) {
+            if(highestPower < fighters.get(i).calcPower()) {
                 highestPower = fighters.get(i).calcPower();
                 winningFighter = i;
             }
-            else if(highestPower == fighters.get(i).calcPower()){
-                if(fighters.get(i).power > fighters.get(winningFighter).power){
+            else if(highestPower == fighters.get(i).calcPower()) {
+                if(fighters.get(i).power > fighters.get(winningFighter).power) {
                     winningFighter = i;
                 }
             }
         }
 
         //Awards coins to the players with winning bets
-        for(int i = 0; i < players.size(); i++){
-            for(int j = 0; j < players.get(i).bets.size(); j++){
-                if(players.get(i).bets.get(j) == winningFighter){
-                    if(players.get(i).bets.size() == 1){
+        for(int i = 0; i < players.size(); i++) {
+            for(int j = 0; j < players.get(i).bets.size(); j++) {
+                if(players.get(i).bets.get(j) == winningFighter) {
+                    if(players.get(i).bets.size() == 1) {
                         players.get(i).coins += fighters.get(winningFighter).prizeMoney * 2;
                     }
-                    else if(players.get(i).bets.size() == 2){
+                    else if(players.get(i).bets.size() == 2) {
                         players.get(i).coins += fighters.get(winningFighter).prizeMoney;
                     }
-                    else if(players.get(i).bets.size() == 3){
+                    else if(players.get(i).bets.size() == 3) {
                         players.get(i).coins += Math.ceil((double)fighters.get(winningFighter).prizeMoney / 2);
                     }
                 }
@@ -516,7 +521,7 @@ public class GameState {
         }
 
         //Resets the players bets
-        for(int i = 0; i < players.size(); i++){
+        for(int i = 0; i < players.size(); i++) {
             players.get(i).bets = new ArrayList<>();
         }
     }
@@ -527,11 +532,11 @@ public class GameState {
             return false;
         }
         //Checks if you have the spell in your hand
-        if(spell >= players.get(idx).hand.size() || spell < 0){
+        if(spell >= players.get(idx).hand.size() || spell < 0) {
             return false;
         }
         //Checks if target is valid
-        if(target < 1 || target > 5){
+        if(target < 1 || target > 5) {
             return false;
         }
         //Reveals their cards
@@ -544,13 +549,15 @@ public class GameState {
     }
 
     //Reveals all face down spell cards on a given player
-    public void revealCards(int idx, int fighter){
-        for(int i = 0; i < fighters.get(fighter).spells.size(); i++){
+    public void revealCards(int idx, int fighter) {
+        for(int i = 0; i < fighters.get(fighter).spells.size(); i++) {
             fighters.get(fighter).spells.get(i).isFaceUp.set(idx, true);
         }
     }
 
-    public FighterCard drawFighterCard() { return this.decks.fighterCards.remove(randGen.nextInt(this.decks.fighterCards.size())); }
+    public FighterCard drawFighterCard() {
+        return this.decks.fighterCards.remove(randGen.nextInt(this.decks.fighterCards.size()));
+    }
 
     public SpellCard drawSpellCard(){
         return this.decks.spellCards.remove(randGen.nextInt(this.decks.spellCards.size()));
@@ -559,5 +566,4 @@ public class GameState {
     public JudgeCard drawJudgeCard(){
         return this.decks.judgeCards.remove(randGen.nextInt(this.decks.judgeCards.size()));
     }
-
 }
