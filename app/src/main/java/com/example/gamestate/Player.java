@@ -16,11 +16,11 @@ public class Player{
     /**
      * Constructor for objects of class Player
      */
-    public Player(String name, int coins, ArrayList<Integer> bets, ArrayList<SpellCard> hand) {
+    public Player(String name, int coins) {
         this.name = name;
         this.coins = coins;
-        this.bets = bets;
-        this.hand = hand;
+        this.bets = new ArrayList<Integer>();
+        this.hand = new ArrayList<SpellCard>();
     }
 
 }

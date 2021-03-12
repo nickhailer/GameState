@@ -18,5 +18,14 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        ArrayList<Player> players= new ArrayList<Player>();
+        players.add(new Player("p1", 2));
+        players.add(new Player("p2", 2));
+        players.add(new Player("p3", 2));
+       GameState gameState = new GameState(1, 1, players);
+
+        Button runTest = (Button)findViewById(R.id.runTestButton);
+        runTest.setOnClickListener(gameState);
+
     }
 }
