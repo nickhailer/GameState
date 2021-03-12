@@ -3,6 +3,8 @@ package com.example.gamestate;
 import android.text.BoringLayout;
 import android.view.View;
 import com.example.Card.*;
+
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -311,14 +313,20 @@ public class GameState {
         return s;
     }
 
-    public boolean placeBet(int idx, ArrayList<Integer> bets) {
-        if(playerTurn == -1 && bets.size() <= 3 && bets.size() > 0) {
-            players.get(idx).bets = bets;
-            return true;
-        }
-        else {
+    public boolean placeBets(int idx, ArrayList<Integer> bets) {
+        if(playerTurn != -1) {
             return false;
         }
+        players.get(idx).bets = bets;
+        //Checks if all players have placed their bets
+        for(int i = 0; i < players.size(); i++){
+            if(players.get(i).bets.size() == 0){
+                return true;
+            }
+        }
+        //If all players have placed their bets go the first players turn
+        playerTurn = randGen.nextInt(players.size());
+        return true;
     }
 
     //0 = judge, 1 - 5 = fighters, 6+ = players, (1+)0(1-5) = spells played on fighter
@@ -359,18 +367,23 @@ public class GameState {
         }
         //Removes card from your hand
         players.get(idx).hand.remove(spell);
+        //Moves turn to the next player
+        playerTurn = (playerTurn + 1) % players.size();
         return true;
     }
 
-    public boolean discardCards(int idx) {
+    public boolean discardCards(int idx, ArrayList<Integer> cards) {
         // If it's players turn and its during the setup phase
         // then they can discard cards
-        if(playerTurn == -2) {
-            return true;
-        }
-        else {
+        if(playerTurn != -2) {
             return false;
         }
+        for(int i = 0; i < cards.size(); i++){
+            if(cards.get(i) < 0 || cards.get(i) > players.get(idx).hand.size()){
+                return false;
+            }
+        }
+        return true;
     }
 
     public boolean pass(int idx) {
@@ -380,8 +393,8 @@ public class GameState {
         passCounter += 1;
         if(passCounter == players.size()){
             passCounter = 0;
-            playerTurn = -2;
             combatPhase();
+            playerTurn = -2;
         }
         return true;
     }
@@ -441,6 +454,11 @@ public class GameState {
                 }
             }
         }
+
+        //Resets the players bets
+        for(int i = 0; i < players.size(); i++){
+            players.get(i).bets = new ArrayList<>();
+        }
     }
 
     public boolean detectMagic(int idx, int spell, int target) {
@@ -460,6 +478,8 @@ public class GameState {
         revealCards(idx, target);
         //Removes card from your hand
         players.get(idx).hand.remove(spell);
+        //Moves turn to the next player
+        playerTurn = (playerTurn + 1) % players.size();
         return true;
     }
 
