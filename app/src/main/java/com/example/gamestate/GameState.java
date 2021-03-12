@@ -3,6 +3,8 @@ package com.example.gamestate;
 import android.text.BoringLayout;
 
 import com.example.Card.*;
+
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -21,6 +23,7 @@ public class GameState {
     public ArrayList<Card> discardPile;
     public Cards decks;
 
+    private int passCounter;
     private Random randGen = new Random();
 
     public GameState(int roundNum, int playerTurn, ArrayList<FighterCard> currFighters, JudgeCard currJudge, ArrayList<Player> players,
@@ -119,7 +122,7 @@ public class GameState {
                     origSpell = origPlayer.hand.get(i);
                     newPlayer.hand.add(new SpellCard(origSpell.name, new ArrayList<Boolean>() {{ add(true); }},
                             origSpell.mana, origSpell.powerMod, origSpell.cardText, origSpell.spellType,
-                            origSpell.isForbidden));
+                            origSpell.isForbidden, origSpell.targetType));
                 }
             }
 
@@ -184,7 +187,7 @@ public class GameState {
                 discardPile.add(new SpellCard(discardedCard.name, new ArrayList<Boolean>(){{ add(true); }},
                         ((SpellCard) discardedCard).mana, ((SpellCard) discardedCard).powerMod,
                         ((SpellCard) discardedCard).cardText, ((SpellCard) discardedCard).spellType,
-                        ((SpellCard) discardedCard).isForbidden));
+                        ((SpellCard) discardedCard).isForbidden, ((SpellCard) discardedCard).targetType));
             }
             else if(discardedCard instanceof JudgeCard){
                 discardPile.add(new JudgeCard(discardedCard.name, original.players.size(),
@@ -290,8 +293,9 @@ public class GameState {
         return s;
     }
 
-    public boolean placeBet(int idx, Player player) {
-        if(idx == playerTurn && player.bets.size() <= 3) {
+    public boolean placeBet(int idx, ArrayList<Integer> bets) {
+        if(playerTurn == -1 && bets.size() <= 3 && bets.size() > 0) {
+            players.get(idx).bets = bets;
             return true;
         }
         else {
@@ -299,8 +303,51 @@ public class GameState {
         }
     }
 
-    public boolean playSpellCard(int idx, Player player, SpellCard sc) {
-        if(idx == playerTurn && player.hand.contains(sc)) {
+    //0 = judge, 1 - 5 = fighters, 6+ = players, (1+)0(1-5) = spells played on fighter
+    //ex. 203 = second spell on the third fighter
+    public boolean playSpellCard(int idx, int spell, int target) {
+        //Check if its this players turn
+        if(idx != playerTurn) {
+            return false;
+        }
+        //Checks if you have the spell in your hand
+        if(spell >= players.get(idx).hand.size() && spell < 0){
+            return false;
+        }
+        //Checks if target is valid
+        if(players.get(idx).hand.get(spell).targetType == 'f' ){
+            if(target < 1 || target > 5){
+                return false;
+            }
+        }
+        else if(players.get(idx).hand.get(spell).targetType == 'j'){
+            if(target != 0) {
+                return false;
+            }
+        }
+        else if(players.get(idx).hand.get(spell).targetType == 'p' && target >= 6){
+            if(target < 6) {
+                return false;
+            }
+        }
+        else if(players.get(idx).hand.get(spell).targetType == 's'){
+            if(target < 100 || target % 100 < 1 || target % 100 > 5) {
+                return false;
+            }
+        }
+        //Attaches card to the target
+        if(target >= 1 && target <= 5){
+            fighters.get(target).spells.add(players.get(idx).hand.get(spell));
+        }
+        //Removes card from your hand
+        players.get(idx).hand.remove(spell);
+        return true;
+    }
+
+    public boolean discardCards(int idx) {
+        // If it's players turn and its during the setup phase
+        // then they can discard cards
+        if(playerTurn == -2) {
             return true;
         }
         else {
@@ -310,6 +357,10 @@ public class GameState {
 
     public boolean pass(int idx) {
         if(idx == playerTurn) {
+            passCounter += 1;
+            if(passCounter == players.size()){
+                playerTurn = -2;
+            }
             return true;
         }
         else {
@@ -317,30 +368,30 @@ public class GameState {
         }
     }
 
-    public boolean discardCards(int idx) {
-        // If it's players turn and its during the setup phase
-        // then they can discard cards
-        if(idx == playerTurn && playerTurn == -1) {
-            return true;
-        }
-        else {
+    public boolean detectMagic(int idx, int spell, int target) {
+        //Check if its this players turn
+        if(idx != playerTurn) {
             return false;
         }
-    }
-
-    public boolean detectMagic(int idx, Player player) {
-        if(idx == playerTurn && player.hand.size() > 0 ) {
-            return true;
-        }
-        else {
+        //Checks if you have the spell in your hand
+        if(spell >= players.get(idx).hand.size() && spell < 0){
             return false;
         }
+        //Checks if target is valid
+        if(target < 1 || target > 5){
+            return false;
+        }
+        //Reveals their cards
+        revealCards(idx, target);
+        //Removes card from your hand
+        players.get(idx).hand.remove(spell);
+        return true;
     }
 
     //Reveals all face down spell cards on a given player
-    public void revealCards(FighterCard f, int idx){
-        for(int i = 0; i < f.spells.size(); i++){
-            f.spells.get(i).isFaceUp.set(idx, true);
+    public void revealCards(int idx, int fighter){
+        for(int i = 0; i < fighters.get(fighter).spells.size(); i++){
+            fighters.get(fighter).spells.get(i).isFaceUp.set(idx, true);
         }
     }
 
