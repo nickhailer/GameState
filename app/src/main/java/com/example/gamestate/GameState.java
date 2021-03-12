@@ -404,6 +404,8 @@ public class GameState {
 
     //Resets the game for the next rounds
     public void resetPhase(){
+
+        //Fills each players hand
         int handSize;
         if(players.size() == 6){
             handSize = 5;
@@ -415,8 +417,21 @@ public class GameState {
             handSize = 8;
         }
         for(int i = 0; i < players.size(); i++){
-            //UNFINISHED CODE
+            while(players.get(i).hand.size() < handSize){
+                players.get(i).hand.add(drawSpellCard());
+            }
         }
+
+        //Recycles fighter cards from discard pile
+        for(int i = 0; i < discardPile.size(); i++){
+            if(discardPile.get(i) instanceof FighterCard){
+                decks.fighterCards.add((FighterCard) discardPile.remove(i));
+            }
+        }
+
+        //Discards judge and draws a new one
+        discardPile.add(judge);
+        judge = drawJudgeCard();
     }
 
     public boolean pass(int idx) {
