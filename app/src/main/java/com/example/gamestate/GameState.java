@@ -1,7 +1,13 @@
 package com.example.gamestate;
 
+import android.content.Context;
+import android.util.AttributeSet;
+import android.view.SurfaceView;
+import android.view.View;
+
 import com.example.Card.*;
 import java.util.ArrayList;
+import java.util.Hashtable;
 import java.util.Random;
 
 public class GameState {
@@ -21,7 +27,7 @@ public class GameState {
     private Random randGen = new Random();
 
     public GameState(int roundNum, int playerTurn, ArrayList<FighterCard> currFighters, JudgeCard currJudge, ArrayList<Player> players,
-                     ArrayList<FighterCard> fighterDeck, ArrayList<SpellCard> spellDeck,ArrayList<JudgeCard> judgeDeck,
+                     ArrayList<FighterCard> fighterDeck, ArrayList<SpellCard> spellDeck, ArrayList<JudgeCard> judgeDeck,
                      ArrayList<Card> discardPile){
         this.roundNum = roundNum;
         this.playerTurn = playerTurn;
@@ -32,6 +38,46 @@ public class GameState {
         this.spellDeck = spellDeck;
         this.judgeDeck = judgeDeck;
         this.discardPile = discardPile;
+
+    }
+
+    @Override
+    public String toString() {
+        String cFighters = "";
+        String p = "";
+        String fighterD = "";
+        String spellD = "";
+        String judgeD = "";
+        String dPile = "";
+
+        for(int i=0; i<currFighters.size(); i++) {
+            cFighters = cFighters + ", " + currFighters.get(i);
+        }
+        for(int i=0; i<players.size(); i++) {
+            p = p + ", " + players.get(i);
+        }
+        for(int i=0; i<fighterDeck.size(); i++) {
+            fighterD = fighterD + ", " + fighterDeck.get(i);
+        }
+        for(int i=0; i<spellDeck.size(); i++) {
+            spellD = spellD + ", " + spellDeck.get(i);
+        }
+        for(int i=0; i<judgeDeck.size(); i++) {
+            judgeD = judgeD + ", " + judgeDeck.get(i);
+        }
+        for(int i=0; i<discardPile.size(); i++) {
+            dPile = dPile + ", " + discardPile.get(i);
+        }
+
+        return "Round: " + roundNum +
+                "\nPlayer's " + playerTurn + " turn " +
+                "\nCurrent Fighters: " + cFighters +
+                "\nPlayers: " + p +
+                "\nFighter Deck: " + fighterD +
+                "\nSpell Deck: " + spellD +
+                "\nJudge Deck: " + judgeD +
+                "\nDiscard Pile: " + dPile;
+
     }
 
     public boolean placeBet(Player player) {
@@ -83,9 +129,7 @@ public class GameState {
 
     public FighterCard drawFighterCard() { return fighterDeck.remove(randGen.nextInt(fighterDeck.size())); }
 
-    public SpellCard drawSpellCard(){
-        return spellDeck.remove(randGen.nextInt(spellDeck.size()));
-    }
+    public SpellCard drawSpellCard(){ return spellDeck.remove(randGen.nextInt(spellDeck.size())); }
 
     public JudgeCard drawJudgeCard(){
         return judgeDeck.remove(randGen.nextInt(judgeDeck.size()));
