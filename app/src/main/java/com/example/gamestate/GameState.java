@@ -34,6 +34,7 @@ public class GameState implements View.OnClickListener {
         this.players = players;
         this.judge = drawJudgeCard();
         this.discardPile = new ArrayList<Card>();
+        this.passCounter = 0;
     }
 
     //idx is which player you want to create this for
@@ -218,14 +219,19 @@ public class GameState implements View.OnClickListener {
 
         //Prints information about the fighters currently in play
         FighterCard f;
-        for(int i = 0; i < 5; i ++){
+        for(int i = 0; i < 5; i++){
             f = fighters.get(i);
             s += f.name + " has a power of " + f.power + " and has a prize of " + f.prizeMoney + ".\n" +
                     "They also have the following spells attached to them: ";
-            for(int j = 0; j < f.spells.size() - 1; j++){
+            for(int j = 0; j < f.spells.size(); j++){
                 s += f.spells.get(j).name + ", ";
+                if(j == f.spells.size() - 1){
+                    s += ".\n";
+                }
+                else{
+                    s += ", ";
+                }
             }
-            s += f.spells.get(f.spells.size() - 1).name + ".\n";
         }
         s += "\n";
 
@@ -269,24 +275,40 @@ public class GameState implements View.OnClickListener {
         for(int i = 0; i < players.size(); i++){
             p = players.get(i);
             s += p.name + " has " + p.coins + " coins and bet on the ";
-            for(int j = 0; j < p.bets.size() - 1; j++){
-                s += fighters.get(j).name + ", ";
+            for(int j = 0; j < p.bets.size(); j++){
+                s += fighters.get(j).name;
+                if(j == p.bets.size() - 1){
+                    s += ".\n";
+                }
+                else{
+                    s += ", ";
+                }
             }
-            s += "and " + fighters.get(p.bets.size() - 1).name + ".\n";
+
             s += "In their hand they have the following spells: ";
-            for(int j = 0; j < p.hand.size() - 1; j++){
-                s += p.hand.get(j).name + ", ";
+            for(int j = 0; j < p.hand.size(); j++){
+                s += p.hand.get(j).name;
+                if(j == p.hand.size() - 1){
+                    s += ".\n";
+                }
+                else{
+                    s += ", ";
+                }
             }
-            s += "and " + p.hand.get(p.hand.size() - 1).name + ".\n";
         }
         s += "\n";
 
         //Prints the cards in the discard pile
         s += "The discard pile has the following cards: ";
-        for(int i = 0; i < discardPile.size() - 1; i++){
-            s += discardPile.get(i).name + ", ";
+        for(int i = 0; i < discardPile.size(); i++){
+            s += discardPile.get(i).name;
+            if(i == discardPile.size() - 1){
+                s += ".\n";
+            }
+            else{
+                s += ", ";
+            }
         }
-        s += "and " + discardPile.get(discardPile.size() - 1).name + ".\n";
 
         return s;
     }
@@ -354,15 +376,59 @@ public class GameState implements View.OnClickListener {
     }
 
     public boolean pass(int idx) {
-        if(idx == playerTurn) {
-            passCounter += 1;
-            if(passCounter == players.size()){
-                playerTurn = -2;
-            }
-            return true;
-        }
-        else {
+        if(idx != playerTurn) {
             return false;
+        }
+        passCounter += 1;
+        if(passCounter == players.size()){
+            passCounter = 0;
+            playerTurn = -2;
+            combatPhase();
+        }
+        return true;
+    }
+
+    //simulates combat between the fighters
+    public void combatPhase(){
+
+        //Checks the mana on each fighter
+        int totalMana;
+        for(int i = 0; i < fighters.size(); i++){
+            totalMana = 0;
+            for(int j = 0; j < fighters.get(i).spells.size(); j++){
+                totalMana += fighters.get(i).spells.get(j).mana;
+                //Applies the judge's judgement
+                if(totalMana > judge.manaLimit){
+                    if(judge.judgementType == 'd'){
+                        fighters.get(i).spells = new ArrayList<>();
+                    }
+                    //Ejects the fighter by replacing them with a filler card and discarding them
+                    else if(judge.judgementType == 'e'){
+                        discardPile.add(fighters.get(i));
+                        fighters.set(i, new FighterCard("Empty", 0, -99,
+                                0, false));
+                    }
+                }
+            }
+        }
+
+        //Finds the fighter with the highest power
+        int winningFighter = -1;
+        int highestPower = 0;
+        for(int i = 0; i < fighters.size(); i++){
+            if(highestPower < fighters.get(i).calcPower()){
+                highestPower = fighters.get(i).calcPower();
+                winningFighter = i;
+            }
+        }
+
+        //Awards coins to the players with winning bets
+        for(int i = 0; i < players.size(); i++){
+            for(int j = 0; j < players.get(i).bets.size(); j++){
+                if(players.get(i).bets.get(j) == winningFighter){
+                    //THIS IS UNFINISHED
+                }
+            }
         }
     }
 

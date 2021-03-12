@@ -32,4 +32,12 @@ public class FighterCard extends Card {
         spells = new ArrayList<>();
     }
 
+    public int calcPower(){
+        int finalPower = power;
+        for(int i = 0; i < spells.size(); i++){
+            finalPower += spells.get(i).powerMod;
+        }
+        return finalPower;
+    }
+
 }
