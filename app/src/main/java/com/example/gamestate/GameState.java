@@ -25,6 +25,7 @@ public class GameState {
 
     public GameState(int roundNum, int playerTurn, ArrayList<FighterCard> currFighters, JudgeCard currJudge, ArrayList<Player> players,
                      ArrayList<Card> discardPile){
+        //general attributes stored by the game
         this.roundNum = roundNum;
         this.playerTurn = playerTurn;
         this.fighters = currFighters;
@@ -259,6 +260,7 @@ public class GameState {
         return s;
     }
 
+    //Checks bets and places them
     public boolean placeBet(int idx, Player player) {
         if(idx == playerTurn && player.bets.size() <= 3) {
             return true;
