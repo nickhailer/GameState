@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 
 import com.example.Card.FighterCard;
 import com.example.Card.JudgeCard;
@@ -24,11 +25,14 @@ public class MainActivity extends AppCompatActivity {
         players.add(new Player("p3", 2));
        GameState gameState = new GameState(players);
 
+        TextView display = (TextView)findViewById(R.id.textView);
+
         Button runTest = (Button)findViewById(R.id.runTestButton);
         runTest.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
-                gameState.toString();
+                String gameInfo= gameState.toString();
+                display.setText(gameInfo);
             }
         });
 
