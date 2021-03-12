@@ -1,6 +1,6 @@
 package com.example.gamestate;
 
-import android.text.BoringLayout
+import android.text.BoringLayout;
 import android.view.View;
 import com.example.Card.*;
 import java.util.ArrayList;
@@ -111,8 +111,7 @@ public class GameState implements View.OnClickListener {
             if(i == idx){
 
                 //Initializes your player
-                newPlayer = new Player(origPlayer.name, origPlayer.coins, new ArrayList<>(),
-                        new ArrayList<>());
+                newPlayer = new Player(origPlayer.name, origPlayer.coins);
 
                 //Adds your player's bets
                 for(int j = 0; j < origPlayer.bets.size(); j++) {
@@ -132,7 +131,7 @@ public class GameState implements View.OnClickListener {
             else{
 
                 //Initializes the new player
-                newPlayer = new Player(origPlayer.name, origPlayer.coins, new ArrayList<>(), new ArrayList<>());
+                newPlayer = new Player(origPlayer.name, origPlayer.coins);
 
                 //Adds the player's bets
                 for(int j = 0; j < origPlayer.bets.size(); j++) {
