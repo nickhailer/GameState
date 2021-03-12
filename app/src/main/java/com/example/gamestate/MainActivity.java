@@ -26,11 +26,13 @@ public class MainActivity extends AppCompatActivity {
        GameState gameState = new GameState(players);
 
         TextView display = (TextView)findViewById(R.id.textView);
+        display.setText("");
 
         Button runTest = (Button)findViewById(R.id.runTestButton);
         runTest.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
+                display.setText("");
                 String gameInfo= gameState.toString();
                 display.setText(gameInfo);
             }
