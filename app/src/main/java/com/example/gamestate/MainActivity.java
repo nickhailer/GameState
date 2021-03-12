@@ -25,7 +25,13 @@ public class MainActivity extends AppCompatActivity {
        GameState gameState = new GameState(players);
 
         Button runTest = (Button)findViewById(R.id.runTestButton);
-        runTest.setOnClickListener(gameState);
+        runTest.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+                gameState.toString();
+            }
+        });
 
     }
+
 }

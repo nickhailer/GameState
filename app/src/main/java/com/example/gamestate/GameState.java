@@ -6,7 +6,7 @@ import com.example.Card.*;
 import java.util.ArrayList;
 import java.util.Random;
 
-public class GameState implements View.OnClickListener {
+public class GameState {
 
     public int roundNum;
     // 1 = player 1, 2 player 2, etc.
@@ -401,8 +401,4 @@ public class GameState implements View.OnClickListener {
         return this.decks.judgeCards.remove(randGen.nextInt(this.decks.judgeCards.size()));
     }
 
-    @Override
-    public void onClick(View v) {
-        toString();
-    }
 }
