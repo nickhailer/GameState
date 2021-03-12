@@ -19,20 +19,18 @@ public class GameState {
     private ArrayList<SpellCard> spellDeck;
     private ArrayList<JudgeCard> judgeDeck;
     public ArrayList<Card> discardPile;
+    public Cards decks;
 
     private Random randGen = new Random();
 
     public GameState(int roundNum, int playerTurn, ArrayList<FighterCard> currFighters, JudgeCard currJudge, ArrayList<Player> players,
-                     ArrayList<FighterCard> fighterDeck, ArrayList<SpellCard> spellDeck,ArrayList<JudgeCard> judgeDeck,
                      ArrayList<Card> discardPile){
         this.roundNum = roundNum;
         this.playerTurn = playerTurn;
         this.fighters = currFighters;
         this.judge = currJudge;
         this.players = players;
-        this.fighterDeck = fighterDeck;
-        this.spellDeck = spellDeck;
-        this.judgeDeck = judgeDeck;
+        this.decks = new Cards(players.size());
         this.discardPile = discardPile;
     }
 
@@ -259,6 +257,53 @@ public class GameState {
         s += "and " + discardPile.get(discardPile.size() - 1).name + ".\n";
 
         return s;
+    }
+
+    public boolean placeBet(int idx, Player player) {
+        if(idx == playerTurn && player.bets.size() <= 3) {
+            return true;
+        }
+        else {
+            return false;
+        }
+    }
+
+    public boolean playSpellCard(int idx, Player player, SpellCard sc) {
+        if(idx == playerTurn && player.hand.contains(sc)) {
+            return true;
+        }
+        else {
+            return false;
+        }
+    }
+
+    public boolean pass(int idx) {
+        if(idx == playerTurn) {
+            return true;
+        }
+        else {
+            return false;
+        }
+    }
+
+    public boolean discardCards(int idx) {
+        // If it's players turn and its during the setup phase
+        // then they can discard cards
+        if(idx == playerTurn && playerTurn == -1) {
+            return true;
+        }
+        else {
+            return false;
+        }
+    }
+
+    public boolean detectMagic(int idx, Player player) {
+        if(idx == playerTurn && player.hand.size() > 0 ) {
+            return true;
+        }
+        else {
+            return false;
+        }
     }
 
     //Reveals all face down spell cards on a given player
