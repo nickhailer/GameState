@@ -23,7 +23,10 @@ public class MainActivity extends AppCompatActivity {
         players.add(new Player("p1", 2));
         players.add(new Player("p2", 2));
         players.add(new Player("p3", 2));
-       GameState gameState = new GameState(players);
+        GameState firstInstance = new GameState(players);
+        GameState secondInstance = new GameState(firstInstance, 0);
+        GameState thirdInstance = new GameState((players));
+        GameState fourthInstance = new GameState(thirdInstance, 0);
 
         TextView display = (TextView)findViewById(R.id.editTextTextMultiLine);
         display.setText("");
@@ -33,7 +36,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 display.setText("");
-                String gameInfo= gameState.toString();
+                String gameInfo = firstInstance.toString() + secondInstance.toString() + thirdInstance.toString() + fourthInstance.toString();
                 display.setText(gameInfo);
             }
         });
