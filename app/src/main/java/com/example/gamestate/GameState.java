@@ -46,6 +46,26 @@ public class GameState {
         discardPile = original.discardPile;
     }
 
+    //Reveals all face down spell cards on a given player
+    public boolean revealCards(FighterCard f, Player p){
+        int idx = getPlayerIndex(p);
+        if(idx >= 0 && idx < players.size()){
+            f.isFaceUp.set(idx, true);
+            return true;
+        }
+        return false;
+    }
+
+    //Returns the index of a player in the players list
+    public int getPlayerIndex(Player p){
+        for(int i = 0; i < players.size(); i++){
+            if(players.get(i) == p){
+                return i;
+            }
+        }
+        return -1;
+    }
+
     public FighterCard drawFighterCard() { return fighterDeck.remove(randGen.nextInt(fighterDeck.size())); }
 
     public SpellCard drawSpellCard(){

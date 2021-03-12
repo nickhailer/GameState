@@ -14,7 +14,9 @@ public class JudgeCard extends Card {
                 add(true);
             }
         }});
-
+        this.manaLimit = manaLimit;
+        this.judgementType = judgementType;
+        this.disallowedSpells = disallowedSpells;
     }
 
 }

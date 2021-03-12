@@ -10,7 +10,6 @@ public class Player{
     protected String name;
     protected int coins;
     protected ArrayList<Integer> bets;
-    public boolean isTheirTurn;
     public ArrayList<SpellCard> hand;
     GameState playerPerspective;
 
@@ -18,25 +17,11 @@ public class Player{
     /**
      * Constructor for objects of class Player
      */
-    public Player(String name, int coins, ArrayList<Integer> bets, boolean isTheirTurn, ArrayList<SpellCard> hand) {
+    public Player(String name, int coins, ArrayList<Integer> bets, ArrayList<SpellCard> hand) {
         this.name = name;
         this.coins = coins;
         this.bets = bets;
-        this.isTheirTurn = isTheirTurn;
         this.hand = hand;
     }
-
-    /**
-     * Copy constructor for class Player
-     */
-    /*
-    public Player(Player original) {
-        name = original.name;
-        isTheirTurn = original.isTheirTurn;
-        coins = original.coins;
-        bets = original.bets;
-        numSpellCards = original.numSpellCards;
-    }
-*/
 
 }
