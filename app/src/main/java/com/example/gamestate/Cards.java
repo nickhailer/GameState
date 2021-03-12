@@ -58,4 +58,7 @@ public class Cards {
         judgeCards.add(new JudgeCard("Lester", numPlayers, 15, 'e', disallowedSpells));
 
     }
+
+    public Cards(){}
+
 }

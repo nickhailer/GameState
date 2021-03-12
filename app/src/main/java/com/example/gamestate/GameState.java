@@ -6,6 +6,7 @@ import com.example.Card.*;
 
 import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Random;
 
 public class GameState {
@@ -20,6 +21,7 @@ public class GameState {
     public ArrayList<Card> discardPile;
     public Cards decks;
 
+    private int discardCounter;
     private int passCounter;
     private Random randGen = new Random();
 
@@ -35,6 +37,7 @@ public class GameState {
         this.judge = drawJudgeCard();
         this.discardPile = new ArrayList<Card>();
         this.passCounter = 0;
+        this.discardCounter = 0;
     }
 
     //idx is which player you want to create this for
@@ -148,21 +151,19 @@ public class GameState {
         }
 
         //Initializes the decks
-        this.decks.fighterCards = new ArrayList<>();
-        this.decks.spellCards = new ArrayList<>();
-        this.decks.judgeCards = new ArrayList<>();
+        decks = new Cards();
 
         //Adds place holder cards to each deck
         for(int i = 0; i < original.decks.fighterCards.size(); i++){
-            this.decks.fighterCards.add(new FighterCard("Unknown", 0, 0, 0,
+            decks.fighterCards.add(new FighterCard("Unknown", 0, 0, 0,
                     false));
         }
         for(int i = 0; i < original.decks.spellCards.size(); i++){
-            this.decks.spellCards.add(new SpellCard("Unknown", new ArrayList<Boolean>() {{ add(false); }},
+            decks.spellCards.add(new SpellCard("Unknown", new ArrayList<Boolean>() {{ add(false); }},
                     0, 0, "", ' ', false));
         }
         for(int i = 0; i < original.decks.judgeCards.size(); i++){
-            this.decks.judgeCards.add(new JudgeCard("Unknown", 0, 0, ' ',
+            decks.judgeCards.add(new JudgeCard("Unknown", 0, 0, ' ',
                     new ArrayList<>()));
         }
 
@@ -378,12 +379,44 @@ public class GameState {
         if(playerTurn != -2) {
             return false;
         }
+        //Checks if you have the cards to discard
         for(int i = 0; i < cards.size(); i++){
             if(cards.get(i) < 0 || cards.get(i) > players.get(idx).hand.size()){
                 return false;
             }
         }
+        //Removes the cards from your hand and place them in the discard pile
+        //Code from https://stackoverflow.com/a/4950905
+        Collections.sort(cards, Collections.reverseOrder());
+        for(int c : cards) {
+            discardPile.add(players.get(idx).hand.get(c));
+            players.get(idx).hand.remove(c);
+        }
+        //If every player has discarded go onto next phase
+        discardCounter++;
+        if(discardCounter == players.size()){
+            resetPhase();
+            discardCounter = 0;
+            playerTurn = -1;
+        }
         return true;
+    }
+
+    //Resets the game for the next rounds
+    public void resetPhase(){
+        int handSize;
+        if(players.size() == 6){
+            handSize = 5;
+        }
+        if(players.size() == 5){
+            handSize = 6;
+        }
+        else{
+            handSize = 8;
+        }
+        for(int i = 0; i < players.size(); i++){
+            //UNFINISHED CODE
+        }
     }
 
     public boolean pass(int idx) {
