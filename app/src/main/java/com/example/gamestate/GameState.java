@@ -1,18 +1,19 @@
 package com.example.gamestate;
 
 import android.text.BoringLayout;
+import android.view.View;
 
 import com.example.Card.*;
 import java.util.ArrayList;
 import java.util.Random;
 
-public class GameState {
+public class GameState implements View.OnClickListener {
 
     public int roundNum;
     // 1 = player 1, 2 player 2, etc.
     // -1 = start of a round, -2 = end of a round
     public int playerTurn;
-    public ArrayList<FighterCard> fighters;
+    public ArrayList<FighterCard> fighters = new ArrayList<FighterCard>();
     public JudgeCard judge;
     public ArrayList<Player> players;
     public ArrayList<FighterCard> fighterDeck;
@@ -23,15 +24,19 @@ public class GameState {
 
     private Random randGen = new Random();
 
-    public GameState(int roundNum, int playerTurn, ArrayList<FighterCard> currFighters, JudgeCard currJudge, ArrayList<Player> players,
-                     ArrayList<Card> discardPile){
-        this.roundNum = roundNum;
-        this.playerTurn = playerTurn;
-        this.fighters = currFighters;
-        this.judge = currJudge;
-        this.players = players;
+    public GameState(int roundNum, int playerTurn, ArrayList<Player> players){
         this.decks = new Cards(players.size());
-        this.discardPile = discardPile;
+        this.roundNum = roundNum;
+        while(this.fighters.size() < 5) {
+            FighterCard tmp = this.decks.fighterCards.get((int) Math.random()* this.decks.fighterCards.size());
+            if(!this.fighters.contains(tmp)) {
+                this.fighters.add(tmp);
+            }
+        }
+        this.playerTurn = playerTurn;
+        this.players = players;
+        this.judge = this.decks.judgeCards.get((int) Math.random()*6);
+        this.discardPile = new ArrayList<Card>();
     }
 
     //idx is which player you want to create this for
@@ -247,4 +252,8 @@ public class GameState {
         return judgeDeck.remove(randGen.nextInt(judgeDeck.size()));
     }
 
+    @Override
+    public void onClick(View v) {
+        toString();
+    }
 }
