@@ -22,13 +22,16 @@ public class MainActivity extends AppCompatActivity {
         players.add(new Player("p1", 2));
         players.add(new Player("p2", 2));
         players.add(new Player("p3", 2));
-       GameState gameState = new GameState(1, 1, players);
+       GameState gameState = new GameState(players);
 
         Button runTest = (Button)findViewById(R.id.runTestButton);
-        runTest.setOnClickListener(gameState);
+        runTest.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+                gameState.toString();
+            }
+        });
 
     }
 
-
 }
-
