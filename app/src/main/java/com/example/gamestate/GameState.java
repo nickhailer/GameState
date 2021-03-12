@@ -6,7 +6,7 @@ import com.example.Card.*;
 import java.util.ArrayList;
 import java.util.Random;
 
-public class GameState implements View.OnClickListener {
+public class GameState {
 
     public int roundNum;
     // 1 = player 1, 2 player 2, etc.
@@ -15,9 +15,6 @@ public class GameState implements View.OnClickListener {
     public ArrayList<FighterCard> fighters = new ArrayList<FighterCard>();
     public JudgeCard judge;
     public ArrayList<Player> players;
-    public ArrayList<FighterCard> fighterDeck;
-    public ArrayList<SpellCard> spellDeck;
-    public ArrayList<JudgeCard> judgeDeck;
     public ArrayList<Card> discardPile;
     public Cards decks;
 
@@ -26,9 +23,10 @@ public class GameState implements View.OnClickListener {
 
     public GameState(ArrayList<Player> players){
         this.decks = new Cards(players.size());
-        this.roundNum = 1;
+        this.roundNum = 0;
         while(this.fighters.size() < 5) {
-            fighters.add(drawFighterCard());
+            FighterCard fCards= drawFighterCard();
+            this.fighters.add(fCards);
         }
         this.playerTurn = -1;
         this.players = players;
@@ -148,21 +146,21 @@ public class GameState implements View.OnClickListener {
         }
 
         //Initializes the decks
-        fighterDeck = new ArrayList<>();
-        spellDeck = new ArrayList<>();
-        judgeDeck = new ArrayList<>();
+        this.decks.fighterCards = new ArrayList<>();
+        this.decks.spellCards = new ArrayList<>();
+        this.decks.judgeCards = new ArrayList<>();
 
         //Adds place holder cards to each deck
-        for(int i = 0; i < original.fighterDeck.size(); i++){
-            fighterDeck.add(new FighterCard("Unknown", 0, 0, 0,
+        for(int i = 0; i < original.decks.fighterCards.size(); i++){
+            this.decks.fighterCards.add(new FighterCard("Unknown", 0, 0, 0,
                     false));
         }
-        for(int i = 0; i < original.spellDeck.size(); i++){
-            spellDeck.add(new SpellCard("Unknown", new ArrayList<Boolean>() {{ add(false); }},
+        for(int i = 0; i < original.decks.spellCards.size(); i++){
+            this.decks.spellCards.add(new SpellCard("Unknown", new ArrayList<Boolean>() {{ add(false); }},
                     0, 0, "", ' ', false));
         }
-        for(int i = 0; i < original.judgeDeck.size(); i++){
-            judgeDeck.add(new JudgeCard("Unknown", 0, 0, ' ',
+        for(int i = 0; i < original.decks.judgeCards.size(); i++){
+            this.decks.judgeCards.add(new JudgeCard("Unknown", 0, 0, ' ',
                     new ArrayList<>()));
         }
 
@@ -459,18 +457,14 @@ public class GameState implements View.OnClickListener {
         }
     }
 
-    public FighterCard drawFighterCard() { return fighterDeck.remove(randGen.nextInt(fighterDeck.size())); }
+    public FighterCard drawFighterCard() { return this.decks.fighterCards.remove(randGen.nextInt(this.decks.fighterCards.size())); }
 
     public SpellCard drawSpellCard(){
-        return spellDeck.remove(randGen.nextInt(spellDeck.size()));
+        return this.decks.spellCards.remove(randGen.nextInt(this.decks.spellCards.size()));
     }
 
     public JudgeCard drawJudgeCard(){
-        return judgeDeck.remove(randGen.nextInt(judgeDeck.size()));
+        return this.decks.judgeCards.remove(randGen.nextInt(this.decks.judgeCards.size()));
     }
 
-    @Override
-    public void onClick(View v) {
-        toString();
-    }
 }
