@@ -203,6 +203,7 @@ public class GameState {
 
     }
 
+    @Override
     public String toString(){
         String s = "";
 
@@ -215,9 +216,8 @@ public class GameState {
             s += "the players are currently deciding which cards to discard.\n";
         }
         else{
-            s += "it is currently " + players.get(playerTurn).name + "'s turn";
+            s += "it is currently " + players.get(playerTurn).name + "'s turn.\n";
         }
-        s += "\n";
 
         //Prints information about the fighters currently in play
         FighterCard f;
@@ -226,10 +226,10 @@ public class GameState {
             s += f.name + " has a power of " + f.power + " and has a prize of " + f.prizeMoney + ".\n" +
                     "They also have the following spells attached to them: ";
             if(f.spells.size() == 0){
-                s += "Nothing\n";
+                s += "Nothing.\n";
             }
             for(int j = 0; j < f.spells.size(); j++){
-                s += f.spells.get(j).name + ", ";
+                s += f.spells.get(j).name;
                 if(j == f.spells.size() - 1){
                     s += ".\n";
                 }
@@ -238,7 +238,6 @@ public class GameState {
                 }
             }
         }
-        s += "\n";
 
         //Prints information about the judge currently in play
         s += "The judge currently in play is " + judge.name + ", they have a mana limit of " + judge.manaLimit +
@@ -249,7 +248,7 @@ public class GameState {
         else if(judge.judgementType == 'e'){
             s += "eject";
         }
-        s += ".\n The spell types they disallow are: ";
+        s += ".\nThe spell types they disallow are: ";
         for(int i = 0; i < judge.disallowedSpells.size(); i++){
             if(i == judge.disallowedSpells.size() - 1){
                 s += "and ";
@@ -273,7 +272,6 @@ public class GameState {
                 s += ", ";
             }
         }
-        s += "\n";
 
         //Prints information about each player
         Player p;
@@ -281,10 +279,10 @@ public class GameState {
             p = players.get(i);
             s += p.name + " has " + p.coins + " coins and bet on the ";
             if(p.bets.size() == 0){
-                s += "Nothing\n";
+                s += "Nothing.\n";
             }
             for(int j = 0; j < p.bets.size(); j++){
-                s += fighters.get(j).name;
+                s += fighters.get(p.bets.get(j)).name;
                 if(j == p.bets.size() - 1){
                     s += ".\n";
                 }
@@ -295,7 +293,7 @@ public class GameState {
 
             s += "In their hand they have the following spells: ";
             if(p.hand.size() == 0){
-                s += "Nothing\n";
+                s += "Nothing.\n";
             }
             for(int j = 0; j < p.hand.size(); j++){
                 s += p.hand.get(j).name;
@@ -307,12 +305,11 @@ public class GameState {
                 }
             }
         }
-        s += "\n";
 
         //Prints the cards in the discard pile
         s += "The discard pile has the following cards: ";
         if(discardPile.size() == 0){
-            s += "Nothing\n";
+            s += "Nothing.\n";
         }
         for(int i = 0; i < discardPile.size(); i++){
             s += discardPile.get(i).name;
@@ -339,7 +336,7 @@ public class GameState {
             }
         }
         //If all players have placed their bets go the first players turn
-        playerTurn = randGen.nextInt(players.size());
+        playerTurn = 0;
         return true;
     }
 
@@ -377,10 +374,10 @@ public class GameState {
         }
         //Attaches card to the target
         if(target >= 1 && target <= 5){
-            fighters.get(target).spells.add(players.get(idx).hand.get(spell));
+            fighters.get(target - 1).spells.add(players.get(idx).hand.get(spell));
         }
         //Removes card from your hand
-        players.get(idx).hand.remove(spell);
+        discardPile.add(players.get(idx).hand.remove(spell));
         //Moves turn to the next player
         playerTurn = (playerTurn + 1) % players.size();
         return true;
@@ -453,12 +450,14 @@ public class GameState {
         if(idx != playerTurn) {
             return false;
         }
-        passCounter += 1;
+        passCounter++;
         if(passCounter == players.size()){
             passCounter = 0;
             combatPhase();
             playerTurn = -2;
+            return true;
         }
+        playerTurn = (playerTurn + 1) % players.size();
         return true;
     }
 
@@ -518,6 +517,11 @@ public class GameState {
             }
         }
 
+        //Removes fighters from the battlefield
+        for(int i = fighters.size() - 1; i >= 0; i--){
+            discardPile.add(fighters.remove(i));
+        }
+
         //Resets the players bets
         for(int i = 0; i < players.size(); i++){
             players.get(i).bets = new ArrayList<>();
@@ -538,9 +542,9 @@ public class GameState {
             return false;
         }
         //Reveals their cards
-        revealCards(idx, target);
+        revealCards(idx, target - 1);
         //Removes card from your hand
-        players.get(idx).hand.remove(spell);
+        discardPile.add(players.get(idx).hand.remove(spell));
         //Moves turn to the next player
         playerTurn = (playerTurn + 1) % players.size();
         return true;
