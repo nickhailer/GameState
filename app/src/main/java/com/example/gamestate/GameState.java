@@ -1,6 +1,7 @@
 package com.example.gamestate;
 
 import android.text.BoringLayout;
+import android.util.Log;
 import android.view.View;
 import com.example.Card.*;
 
@@ -34,8 +35,8 @@ public class GameState {
         }
         this.playerTurn = -1;
         this.players = players;
-        this.judge = drawJudgeCard();
         this.discardPile = new ArrayList<Card>();
+        this.setupPhase();
         this.passCounter = 0;
         this.discardCounter = 0;
     }
@@ -120,8 +121,8 @@ public class GameState {
                 }
 
                 //Adds your player's spell cards to their hand
-                for(int j = 0; j < origPlayer.hand.size(); i++){
-                    origSpell = origPlayer.hand.get(i);
+                for(int j = 0; j < origPlayer.hand.size(); j++){
+                    origSpell = origPlayer.hand.get(j);
                     newPlayer.hand.add(new SpellCard(origSpell.name, new ArrayList<Boolean>() {{ add(true); }},
                             origSpell.mana, origSpell.powerMod, origSpell.cardText, origSpell.spellType,
                             origSpell.isForbidden, origSpell.targetType));
@@ -350,7 +351,7 @@ public class GameState {
             return false;
         }
         //Checks if you have the spell in your hand
-        if(spell >= players.get(idx).hand.size() && spell < 0){
+        if(spell >= players.get(idx).hand.size() || spell < 0){
             return false;
         }
         //Checks if target is valid
@@ -364,7 +365,7 @@ public class GameState {
                 return false;
             }
         }
-        else if(players.get(idx).hand.get(spell).targetType == 'p' && target >= 6){
+        else if(players.get(idx).hand.get(spell).targetType == 'p'){
             if(target < 6) {
                 return false;
             }
@@ -407,15 +408,16 @@ public class GameState {
         //If every player has discarded go onto next phase
         discardCounter++;
         if(discardCounter == players.size()){
-            resetPhase();
+            discardPile.add(judge);
+            setupPhase();
             discardCounter = 0;
             playerTurn = -1;
         }
         return true;
     }
 
-    //Resets the game for the next rounds
-    public void resetPhase(){
+    //Sets the game for the another rounds
+    public void setupPhase(){
 
         //Fills each players hand
         int handSize;
@@ -431,6 +433,7 @@ public class GameState {
         for(int i = 0; i < players.size(); i++){
             while(players.get(i).hand.size() < handSize){
                 players.get(i).hand.add(drawSpellCard());
+
             }
         }
 
@@ -441,9 +444,9 @@ public class GameState {
             }
         }
 
-        //Discards judge and draws a new one
-        discardPile.add(judge);
+        //Gets a new judge
         judge = drawJudgeCard();
+
     }
 
     public boolean pass(int idx) {
