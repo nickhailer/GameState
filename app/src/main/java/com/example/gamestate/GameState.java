@@ -1,5 +1,7 @@
 package com.example.gamestate;
 
+import android.text.BoringLayout;
+
 import com.example.Card.*;
 import java.util.ArrayList;
 import java.util.Random;
@@ -34,16 +36,62 @@ public class GameState {
         this.discardPile = discardPile;
     }
 
+    //idx is which player you want to create this for
     public GameState(GameState original, int idx) {
+
+        //Copies non object fields
         roundNum = original.roundNum;
         playerTurn = original.playerTurn;
-        fighters = original.fighters;
-        judge = original.judge;
-        players = original.players;
-        fighterDeck = original.fighterDeck;
-        spellDeck = original.spellDeck;
-        judgeDeck = original.judgeDeck;
-        discardPile = original.discardPile;
+
+        //Initializes the fighters array
+        fighters = new ArrayList<FighterCard>();
+
+        //Temp helper variables
+        FighterCard origFighter;
+        FighterCard newFighter;
+        SpellCard attSpell;
+
+        //Iterates through each fighter in the original fighters
+        for(int i = 0; i < original.fighters.size(); i++){
+
+            origFighter = original.fighters.get(i);
+
+            //Initializes the new fighter
+            newFighter = new FighterCard(origFighter.name, original.players.size(), origFighter.power,
+                    origFighter.prizeMoney, origFighter.isUndead);
+
+            //Iterates through each spell on the original fighter
+            for(int j = 0; j < origFighter.spells.size(); j++){
+                attSpell = origFighter.spells.get(i);
+
+                //Attaches face up spells regularly
+                if(attSpell.isFaceUp.get(idx)){
+                    newFighter.spells.add(new SpellCard(attSpell.name, new ArrayList<Boolean>() {{ add(true); }},
+                            attSpell.mana, attSpell.powerMod, attSpell.cardText, attSpell.spellType,
+                            attSpell.isForbidden));
+                }
+
+                //Attaches face down spells with a placeholder obj
+                else{
+                    newFighter.spells.add(new SpellCard("Unknown", new ArrayList<Boolean>() {{ add(false); }},
+                            0, 0, "", ' ', false));
+                }
+            }
+
+            //Adds the newly created fighter
+            fighters.add(newFighter);
+        }
+
+        //Initializes the new judge
+        judge = new JudgeCard(original.judge.name, original.players.size(), original.judge.manaLimit,
+                original.judge.judgementType, new ArrayList<Character>());
+        //Copies over the disallowedSpells array to the new judge
+        for(int i = 0; i < original.judge.disallowedSpells.size(); i++){
+            judge.disallowedSpells.add(original.judge.disallowedSpells.get(i));
+        }
+
+        
+
     }
 
     public String toString(){
