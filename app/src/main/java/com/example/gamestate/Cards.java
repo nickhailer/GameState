@@ -2,31 +2,60 @@ package com.example.gamestate;
 
 import android.location.GnssAntennaInfo;
 
+import com.example.Card.FighterCard;
+import com.example.Card.JudgeCard;
+import com.example.Card.SpellCard;
+
+import java.util.ArrayList;
+import java.util.Hashtable;
+
 public class Cards {
     // Instance Variables
-    protected String[] fighterCards; // Fighter Card Deck
-    protected String[] judgeCards;   // Judge Card Deck
-    protected String[] dsCards;      // Direct Spell Card Deck
-    protected String[] esCards;      // Enchanted Spell Card Deck
-    protected String[] ssCards;      // Support Spell Card Deck
-    protected String[] fsCards;      // Forbidden Spell Card Deck
-    
+    public ArrayList<FighterCard> fighterCards = new ArrayList<FighterCard>(); // Fighter Card Deck
+    public ArrayList<SpellCard> spellCards = new ArrayList<SpellCard>();
+    public ArrayList<JudgeCard> judgeCards = new ArrayList<JudgeCard>();
 
-    public Cards(){
-        fighterCards = new String[] {"Goblin", "Orc", "Skeleton", "Lizardman", "Ghost",
-                                     "Succubus", "Dark Elf", "Minotaur", "Demon", "Dragon"};
+    public Cards(int numPlayers){
+        // Creating Fighter Cards
+        fighterCards.add(new FighterCard("Goblin", numPlayers, 1, 10, false));
+        fighterCards.add(new FighterCard("Orc", numPlayers, 2, 8, false));
+        fighterCards.add(new FighterCard("Skeleton", numPlayers, 3, 7, true));
+        fighterCards.add(new FighterCard("Lizardman", numPlayers, 4, 6, false));
+        fighterCards.add(new FighterCard("Ghost", numPlayers, 5, 5, true));
+        fighterCards.add(new FighterCard("Succubus", numPlayers, 6, 5, false));
+        fighterCards.add(new FighterCard("Dark Elf", numPlayers, 7, 4, false));
+        fighterCards.add(new FighterCard("Minotaur", numPlayers, 8, 4, false));
+        fighterCards.add(new FighterCard("Demon", numPlayers, 9, 3, false));
+        fighterCards.add(new FighterCard("Dragon", numPlayers, 10, 3, false));
 
-        judgeCards = new String[] {"Adoth", "Tad", "Ferine", "Morla",
-                                    "Orlair", "Lawty", "Lester", "Zapp"};
+        ArrayList<Boolean> faceUp = new ArrayList<Boolean>();
+        faceUp.add(true);
+        faceUp.add(false);
 
-        dsCards = new String[] {"Blizzard", " Missile Magic", "Healing", "Lightning Bolt"};
+        // Creating Spell Cards
+        //public SpellCard(String name, ArrayList<Boolean> isFaceUp, int mana, int powerMod, String cardText,char spellType, boolean isForbidden){
+        spellCards.add(new SpellCard("Blizzard", faceUp, 4, -6, "", 'd', false));
+        spellCards.add(new SpellCard("Might", faceUp, 4, 5, "", 'e', false));
+        spellCards.add(new SpellCard("Duplicate", faceUp, 0, 0, "Enduring/Spell: Target spell has its effect doubled. Mana does not double", 's', false));
+        spellCards.add(new SpellCard("Mana Seal", faceUp, -5, 0, "", 'e', false));
+        spellCards.add(new SpellCard("Magic Missile", faceUp, 0, -2, "", 'd', false));
+        spellCards.add(new SpellCard("Giant Growth", faceUp, 0, 12, "", 'e', true));
+        spellCards.add(new SpellCard("Haste", faceUp, 6, 4, "", 'e', false));
+        spellCards.add(new SpellCard("Healing", faceUp, 1, 4, "", 'd', false));
 
-        esCards = new String[] {"Might", "Mana Seal", "Power Awakening", "Cause Unpopularity",
-                                "Haste", "Mana Boost"};
+        ArrayList<Character> disallowedSpells = new ArrayList<Character>();
+        disallowedSpells.add('s');
+        disallowedSpells.add('f');
+        disallowedSpells.add('d');
 
-        ssCards = new String[] {"Duplicate", "Dispel Magic", "Invisibility", "Amnesia", "Dimension Door"};
+        // Creating Judge Cards
+        //JudgeCard(String name, int numPlayers, int manaLimit, String judgementType, ArrayList<Character> disallowedSpells){
+        judgeCards.add(new JudgeCard("Adoth", numPlayers, 10, 'e', disallowedSpells));
+        judgeCards.add(new JudgeCard("Morla", numPlayers, 12, 'd', disallowedSpells));
+        judgeCards.add(new JudgeCard("Orlair", numPlayers, 12, 'e', disallowedSpells));
+        judgeCards.add(new JudgeCard("Zapp", numPlayers, 15, 'd', disallowedSpells));
+        judgeCards.add(new JudgeCard("Lawty", numPlayers, 10, 'd', disallowedSpells));
+        judgeCards.add(new JudgeCard("Lester", numPlayers, 15, 'e', disallowedSpells));
 
-        fsCards = new String[] {"Metamorphosis", "Shrink", "Giant Growth", "Reflection",
-                                "Alteration", "Anti-Magic Field"};
     }
 }

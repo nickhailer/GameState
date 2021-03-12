@@ -19,20 +19,18 @@ public class GameState {
     public ArrayList<SpellCard> spellDeck;
     public ArrayList<JudgeCard> judgeDeck;
     public ArrayList<Card> discardPile;
+    public Cards decks;
 
     private Random randGen = new Random();
 
     public GameState(int roundNum, int playerTurn, ArrayList<FighterCard> currFighters, JudgeCard currJudge, ArrayList<Player> players,
-                     ArrayList<FighterCard> fighterDeck, ArrayList<SpellCard> spellDeck,ArrayList<JudgeCard> judgeDeck,
                      ArrayList<Card> discardPile){
         this.roundNum = roundNum;
         this.playerTurn = playerTurn;
         this.fighters = currFighters;
         this.judge = currJudge;
         this.players = players;
-        this.fighterDeck = fighterDeck;
-        this.spellDeck = spellDeck;
-        this.judgeDeck = judgeDeck;
+        this.decks = new Cards(players.size());
         this.discardPile = discardPile;
     }
 

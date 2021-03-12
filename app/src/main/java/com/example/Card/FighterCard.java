@@ -4,11 +4,20 @@ import java.util.ArrayList;
 
 public class FighterCard extends Card {
 
+    // Instance Variables
     public int power;
     public int prizeMoney;
     public boolean isUndead;
     public ArrayList<SpellCard> spells;
 
+    /**
+     * Fighter Card Constructor
+     * @param name
+     * @param numPlayers
+     * @param power
+     * @param prizeMoney
+     * @param isUndead
+     */
     public FighterCard(String name, int numPlayers, int power, int prizeMoney, boolean isUndead){
         //Code from https://stackoverflow.com/a/16195084
         super(name, new ArrayList<Boolean>() {{
