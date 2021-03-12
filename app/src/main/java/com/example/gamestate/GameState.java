@@ -24,18 +24,15 @@ public class GameState implements View.OnClickListener {
     private int passCounter;
     private Random randGen = new Random();
 
-    public GameState(int roundNum, int playerTurn, ArrayList<Player> players){
+    public GameState(ArrayList<Player> players){
         this.decks = new Cards(players.size());
-        this.roundNum = roundNum;
+        this.roundNum = 1;
         while(this.fighters.size() < 5) {
-            FighterCard tmp = this.decks.fighterCards.get((int) Math.random()* this.decks.fighterCards.size());
-            if(!this.fighters.contains(tmp)) {
-                this.fighters.add(tmp);
-            }
+            fighters.add(drawFighterCard());
         }
-        this.playerTurn = playerTurn;
+        this.playerTurn = -1;
         this.players = players;
-        this.judge = this.decks.judgeCards.get((int) Math.random()*6);
+        this.judge = drawJudgeCard();
         this.discardPile = new ArrayList<Card>();
     }
 
