@@ -224,6 +224,9 @@ public class GameState {
             f = fighters.get(i);
             s += f.name + " has a power of " + f.power + " and has a prize of " + f.prizeMoney + ".\n" +
                     "They also have the following spells attached to them: ";
+            if(f.spells.size() == 0){
+                s += "Nothing\n";
+            }
             for(int j = 0; j < f.spells.size(); j++){
                 s += f.spells.get(j).name + ", ";
                 if(j == f.spells.size() - 1){
@@ -276,6 +279,9 @@ public class GameState {
         for(int i = 0; i < players.size(); i++){
             p = players.get(i);
             s += p.name + " has " + p.coins + " coins and bet on the ";
+            if(p.bets.size() == 0){
+                s += "Nothing\n";
+            }
             for(int j = 0; j < p.bets.size(); j++){
                 s += fighters.get(j).name;
                 if(j == p.bets.size() - 1){
@@ -287,6 +293,9 @@ public class GameState {
             }
 
             s += "In their hand they have the following spells: ";
+            if(p.hand.size() == 0){
+                s += "Nothing\n";
+            }
             for(int j = 0; j < p.hand.size(); j++){
                 s += p.hand.get(j).name;
                 if(j == p.hand.size() - 1){
@@ -301,6 +310,9 @@ public class GameState {
 
         //Prints the cards in the discard pile
         s += "The discard pile has the following cards: ";
+        if(discardPile.size() == 0){
+            s += "Nothing\n";
+        }
         for(int i = 0; i < discardPile.size(); i++){
             s += discardPile.get(i).name;
             if(i == discardPile.size() - 1){
