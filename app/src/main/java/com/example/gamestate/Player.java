@@ -4,7 +4,7 @@ import com.example.Card.SpellCard;
 
 import java.util.ArrayList;
 
-public class Player{
+public class Player {
 
     // Instance Variables
     public String name;
@@ -22,5 +22,4 @@ public class Player{
         this.bets = new ArrayList<Integer>();
         this.hand = new ArrayList<SpellCard>();
     }
-
 }
