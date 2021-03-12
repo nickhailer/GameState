@@ -515,7 +515,7 @@ public class GameState {
             return false;
         }
         //Checks if you have the spell in your hand
-        if(spell >= players.get(idx).hand.size() && spell < 0){
+        if(spell >= players.get(idx).hand.size() || spell < 0){
             return false;
         }
         //Checks if target is valid
