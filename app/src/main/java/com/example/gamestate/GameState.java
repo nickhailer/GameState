@@ -164,7 +164,38 @@ public class GameState {
                     new ArrayList<>()));
         }
 
-        //DISCARD PILE NEEDS TO BE IMPLEMENTED
+        //Initializes discard pile
+        discardPile = new ArrayList<>();
+
+        //Iterates through each card in the original discard pile
+        Card discardedCard;
+        for(int i = 0; i < original.discardPile.size(); i++){
+
+            //gets original card
+            discardedCard = original.discardPile.get(i);
+
+            //Determines which type of card to correctly add it
+            if(discardedCard instanceof FighterCard){
+                discardPile.add(new FighterCard(discardedCard.name, original.players.size(),
+                        ((FighterCard) discardedCard).power, ((FighterCard) discardedCard).prizeMoney,
+                        ((FighterCard) discardedCard).isUndead));
+            }
+            else if(discardedCard instanceof SpellCard){
+                discardPile.add(new SpellCard(discardedCard.name, new ArrayList<Boolean>(){{ add(true); }},
+                        ((SpellCard) discardedCard).mana, ((SpellCard) discardedCard).powerMod,
+                        ((SpellCard) discardedCard).cardText, ((SpellCard) discardedCard).spellType,
+                        ((SpellCard) discardedCard).isForbidden));
+            }
+            else if(discardedCard instanceof JudgeCard){
+                discardPile.add(new JudgeCard(discardedCard.name, original.players.size(),
+                        ((JudgeCard) discardedCard).manaLimit, ((JudgeCard) discardedCard).judgementType,
+                        new ArrayList<Character>()));
+                //Copies the characters from the disallowedSpells array
+                for(int j = 0; j < ((JudgeCard) discardedCard).disallowedSpells.size(); j++){
+                    ((JudgeCard) discardPile.get(i)).disallowedSpells.add(((JudgeCard) discardedCard).disallowedSpells.get(j));
+                }
+            }
+        }
 
     }
 
