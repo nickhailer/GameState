@@ -7,9 +7,9 @@ import java.util.ArrayList;
 public class Player{
 
     // Instance Variables
-    protected String name;
-    protected int coins;
-    protected ArrayList<Integer> bets;
+    public String name;
+    public int coins;
+    public ArrayList<Integer> bets;
     public ArrayList<SpellCard> hand;
     GameState playerPerspective;
 

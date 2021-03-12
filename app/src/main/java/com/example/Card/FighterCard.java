@@ -23,7 +23,4 @@ public class FighterCard extends Card {
         spells = new ArrayList<>();
     }
 
-    //maybe make this return a boolean if successful?
-    public void attachSpell(SpellCard spell){ spells.add(spell); }
-
 }

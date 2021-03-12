@@ -14,10 +14,10 @@ public class GameState {
     public int playerTurn;
     public ArrayList<FighterCard> fighters;
     public JudgeCard judge;
-    public ArrayList<Player> players;
-    public ArrayList<FighterCard> fighterDeck;
-    public ArrayList<SpellCard> spellDeck;
-    public ArrayList<JudgeCard> judgeDeck;
+    private ArrayList<Player> players;
+    private ArrayList<FighterCard> fighterDeck;
+    private ArrayList<SpellCard> spellDeck;
+    private ArrayList<JudgeCard> judgeDeck;
     public ArrayList<Card> discardPile;
 
     private Random randGen = new Random();
@@ -44,7 +44,7 @@ public class GameState {
         playerTurn = original.playerTurn;
 
         //Initializes the fighters array
-        fighters = new ArrayList<FighterCard>();
+        fighters = new ArrayList<>();
 
         //Temp helper variables
         FighterCard origFighter;
@@ -84,13 +84,89 @@ public class GameState {
 
         //Initializes the new judge
         judge = new JudgeCard(original.judge.name, original.players.size(), original.judge.manaLimit,
-                original.judge.judgementType, new ArrayList<Character>());
+                original.judge.judgementType, new ArrayList<>());
         //Copies over the disallowedSpells array to the new judge
         for(int i = 0; i < original.judge.disallowedSpells.size(); i++){
             judge.disallowedSpells.add(original.judge.disallowedSpells.get(i));
         }
 
-        
+        //Initializes the players array
+        players = new ArrayList<>();
+
+        //Temp helper variables
+        Player origPlayer;
+        Player newPlayer;
+        SpellCard origSpell;
+
+        //Iterates through list of players
+        for(int i = 0; i < original.players.size(); i++){
+
+            //Gets the original player
+            origPlayer = original.players.get(i);
+
+            //If it's your player add them normally
+            if(i == idx){
+
+                //Initializes your player
+                newPlayer = new Player(origPlayer.name, origPlayer.coins, new ArrayList<>(),
+                        new ArrayList<>());
+
+                //Adds your player's bets
+                for(int j = 0; j < origPlayer.bets.size(); j++) {
+                    newPlayer.bets.add(origPlayer.bets.get(j));
+                }
+
+                //Adds your player's spell cards to their hand
+                for(int j = 0; j < origPlayer.hand.size(); i++){
+                    origSpell = origPlayer.hand.get(i);
+                    newPlayer.hand.add(new SpellCard(origSpell.name, new ArrayList<Boolean>() {{ add(true); }},
+                            origSpell.mana, origSpell.powerMod, origSpell.cardText, origSpell.spellType,
+                            origSpell.isForbidden));
+                }
+            }
+
+            //Otherwise add them with limited information
+            else{
+
+                //Initializes the new player
+                newPlayer = new Player(origPlayer.name, origPlayer.coins, new ArrayList<>(), new ArrayList<>());
+
+                //Adds the player's bets
+                for(int j = 0; j < origPlayer.bets.size(); j++) {
+                    newPlayer.bets.add(-1);
+                }
+
+                //Adds the player's spell cards to their hand
+                for(int j = 0; j < origPlayer.hand.size(); j++){
+                    newPlayer.hand.add(new SpellCard("Unknown", new ArrayList<Boolean>() {{ add(false); }},
+                            0, 0, "", ' ', false));
+                }
+            }
+
+            //Adds your player
+            players.add(i, newPlayer);
+        }
+
+        //Initializes the decks
+        fighterDeck = new ArrayList<>();
+        spellDeck = new ArrayList<>();
+        judgeDeck = new ArrayList<>();
+
+        //Adds place holder cards to each deck
+        for(int i = 0; i < original.fighterDeck.size(); i++){
+            fighterDeck.add(new FighterCard("Unknown", 0, 0, 0,
+                    false));
+        }
+        for(int i = 0; i < original.spellDeck.size(); i++){
+            spellDeck.add(new SpellCard("Unknown", new ArrayList<Boolean>() {{ add(false); }},
+                    0, 0, "", ' ', false));
+        }
+        for(int i = 0; i < original.judgeDeck.size(); i++){
+            judgeDeck.add(new JudgeCard("Unknown", 0, 0, ' ',
+                    new ArrayList<>()));
+        }
+
+        //DISCARD PILE NEEDS TO BE IMPLEMENTED
 
     }
 
@@ -140,7 +216,7 @@ public class GameState {
             if(judge.disallowedSpells.get(i) == 'd'){
                 s += "direct";
             }
-            else if(judge.disallowedSpells.get(i) == 'd'){
+            else if(judge.disallowedSpells.get(i) == 'e'){
                 s += "enchant";
             }
             else if(judge.disallowedSpells.get(i) == 's'){
