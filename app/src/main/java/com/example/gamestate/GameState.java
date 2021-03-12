@@ -10,8 +10,8 @@ public class GameState {
     // 1 = player 1, 2 player 2, etc.
     // -1 = setup phase, -2 = judge phase
     public int playerTurn;
-    public ArrayList<FighterCard> currFighters;
-    public JudgeCard currJudge;
+    public ArrayList<FighterCard> fighters;
+    public JudgeCard judge;
     public ArrayList<Player> players;
     public ArrayList<FighterCard> fighterDeck;
     public ArrayList<SpellCard> spellDeck;
@@ -25,8 +25,8 @@ public class GameState {
                      ArrayList<Card> discardPile){
         this.roundNum = roundNum;
         this.playerTurn = playerTurn;
-        this.currFighters = currFighters;
-        this.currJudge = currJudge;
+        this.fighters = currFighters;
+        this.judge = currJudge;
         this.players = players;
         this.fighterDeck = fighterDeck;
         this.spellDeck = spellDeck;
@@ -37,13 +37,60 @@ public class GameState {
     public GameState(GameState original) {
         roundNum = original.roundNum;
         playerTurn = original.playerTurn;
-        currFighters = original.currFighters;
-        currJudge = original.currJudge;
+        fighters = original.fighters;
+        judge = original.judge;
         players = original.players;
         fighterDeck = original.fighterDeck;
         spellDeck = original.spellDeck;
         judgeDeck = original.judgeDeck;
         discardPile = original.discardPile;
+    }
+
+    public String toString(){
+        String s = "";
+
+        //Prints information about the fighters currently in play
+        FighterCard f;
+        for(int i = 0; i < 5; i ++){
+            f = fighters.get(i);
+            s += f.name + " has a power of " + f.power + " and has a prize of " + f.prizeMoney + ".\n" +
+                    "They also have the following spells attached to them: ";
+            for(int j = 0; j < f.spells.size() - 1; j++){
+                s += f.spells.get(j).name + ", ";
+            }
+            s += f.spells.get(f.spells.size() - 1).name + ".\n";
+        }
+
+        //Prints information about the judge currently in play
+        s += "The judge currently in play is " + judge.name + " and they have a mana limit of " + judge.manaLimit +
+                ".\n The spell types they disallow are: ";
+        for(int i = 0; i < judge.disallowedSpells.size(); i++){
+            if(i == judge.disallowedSpells.size() - 1){
+                s += "and ";
+            }
+            if(judge.disallowedSpells.get(i) == 'd'){
+                s += "direct";
+            }
+            else if(judge.disallowedSpells.get(i) == 'd'){
+                s += "enchant";
+            }
+            else if(judge.disallowedSpells.get(i) == 's'){
+                s += "support";
+            }
+            else if(judge.disallowedSpells.get(i) == 'f'){
+                s += "forbidden";
+            }
+            if(i == judge.disallowedSpells.size() - 1){
+                s += ".\n";
+            }
+            else {
+                s += ", ";
+            }
+        }
+
+        //Prints information about each players hand
+
+        return s;
     }
 
     //Reveals all face down spell cards on a given player

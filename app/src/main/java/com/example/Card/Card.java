@@ -13,5 +13,4 @@ public class Card {
         this.name = name;
         this.isFaceUp = isFaceUp;
     }
-
 }
