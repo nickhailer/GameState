@@ -25,7 +25,7 @@ public class MainActivity extends AppCompatActivity {
         players.add(new Player("p3", 2));
        GameState gameState = new GameState(players);
 
-        TextView display = (TextView)findViewById(R.id.textView);
+        TextView display = (TextView)findViewById(R.id.editTextTextMultiLine);
         display.setText("");
 
         Button runTest = (Button)findViewById(R.id.runTestButton);
