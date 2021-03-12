@@ -13,7 +13,6 @@ public class Player{
     public ArrayList<SpellCard> hand;
     GameState playerPerspective;
 
-
     /**
      * Constructor for objects of class Player
      */
