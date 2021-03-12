@@ -411,12 +411,17 @@ public class GameState {
         }
 
         //Finds the fighter with the highest power
-        int winningFighter = -1;
+        int winningFighter = 0;
         int highestPower = 0;
         for(int i = 0; i < fighters.size(); i++){
             if(highestPower < fighters.get(i).calcPower()){
                 highestPower = fighters.get(i).calcPower();
                 winningFighter = i;
+            }
+            else if(highestPower == fighters.get(i).calcPower()){
+                if(fighters.get(i).power > fighters.get(winningFighter).power){
+                    winningFighter = i;
+                }
             }
         }
 
@@ -424,7 +429,15 @@ public class GameState {
         for(int i = 0; i < players.size(); i++){
             for(int j = 0; j < players.get(i).bets.size(); j++){
                 if(players.get(i).bets.get(j) == winningFighter){
-                    //THIS IS UNFINISHED
+                    if(players.get(i).bets.size() == 1){
+                        players.get(i).coins += fighters.get(winningFighter).prizeMoney * 2;
+                    }
+                    else if(players.get(i).bets.size() == 2){
+                        players.get(i).coins += fighters.get(winningFighter).prizeMoney;
+                    }
+                    else if(players.get(i).bets.size() == 3){
+                        players.get(i).coins += Math.ceil((double)fighters.get(winningFighter).prizeMoney / 2);
+                    }
                 }
             }
         }
