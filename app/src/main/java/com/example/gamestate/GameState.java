@@ -8,7 +8,7 @@ public class GameState {
 
     public int roundNum;
     // 1 = player 1, 2 player 2, etc.
-    // -1 = setup phase, -2 = judge phase
+    // -1 = start of a round, -2 = end of a round
     public int playerTurn;
     public ArrayList<FighterCard> fighters;
     public JudgeCard judge;
@@ -49,6 +49,19 @@ public class GameState {
     public String toString(){
         String s = "";
 
+        //Prints the current round of the game
+        s += "It is round " + roundNum + " and ";
+        if(playerTurn == -1){
+            s += "the players are currently placing their bets.\n";
+        }
+        else if(playerTurn == -2){
+            s += "the players are currently deciding which cards to discard.\n";
+        }
+        else{
+            s += "it is currently " + players.get(playerTurn).name + "'s turn";
+        }
+        s += "\n";
+
         //Prints information about the fighters currently in play
         FighterCard f;
         for(int i = 0; i < 5; i ++){
@@ -60,10 +73,18 @@ public class GameState {
             }
             s += f.spells.get(f.spells.size() - 1).name + ".\n";
         }
+        s += "\n";
 
         //Prints information about the judge currently in play
-        s += "The judge currently in play is " + judge.name + " and they have a mana limit of " + judge.manaLimit +
-                ".\n The spell types they disallow are: ";
+        s += "The judge currently in play is " + judge.name + ", they have a mana limit of " + judge.manaLimit +
+                ", and their judgement type is ";
+        if(judge.judgementType == 'd'){
+            s += "dispel";
+        }
+        else if(judge.judgementType == 'e'){
+            s += "eject";
+        }
+        s += ".\n The spell types they disallow are: ";
         for(int i = 0; i < judge.disallowedSpells.size(); i++){
             if(i == judge.disallowedSpells.size() - 1){
                 s += "and ";
@@ -87,8 +108,31 @@ public class GameState {
                 s += ", ";
             }
         }
+        s += "\n";
 
-        //Prints information about each players hand
+        //Prints information about each player
+        Player p;
+        for(int i = 0; i < players.size(); i++){
+            p = players.get(i);
+            s += p.name + " has " + p.coins + " coins and bet on the ";
+            for(int j = 0; j < p.bets.size() - 1; j++){
+                s += fighters.get(j).name + ", ";
+            }
+            s += "and " + fighters.get(p.bets.size() - 1).name + ".\n";
+            s += "In their hand they have the following spells: ";
+            for(int j = 0; j < p.hand.size() - 1; j++){
+                s += p.hand.get(j).name + ", ";
+            }
+            s += "and " + p.hand.get(p.hand.size() - 1).name + ".\n";
+        }
+        s += "\n";
+
+        //Prints the cards in the discard pile
+        s += "The discard pile has the following cards: ";
+        for(int i = 0; i < discardPile.size() - 1; i++){
+            s += discardPile.get(i).name + ", ";
+        }
+        s += "and " + discardPile.get(discardPile.size() - 1).name + ".\n";
 
         return s;
     }
