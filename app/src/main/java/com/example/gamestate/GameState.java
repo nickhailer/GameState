@@ -183,6 +183,53 @@ public class GameState {
         return s;
     }
 
+    public boolean placeBet(int idx, Player player) {
+        if(idx == playerTurn && player.bets.size() <= 3) {
+            return true;
+        }
+        else {
+            return false;
+        }
+    }
+
+    public boolean playSpellCard(int idx, Player player, SpellCard sc) {
+        if(idx == playerTurn && player.hand.contains(sc)) {
+            return true;
+        }
+        else {
+            return false;
+        }
+    }
+
+    public boolean pass(int idx) {
+        if(idx == playerTurn) {
+            return true;
+        }
+        else {
+            return false;
+        }
+    }
+
+    public boolean discardCards(int idx) {
+        // If it's players turn and its during the setup phase
+        // then they can discard cards
+        if(idx == playerTurn && playerTurn == -1) {
+            return true;
+        }
+        else {
+            return false;
+        }
+    }
+
+    public boolean detectMagic(int idx, Player player) {
+        if(idx == playerTurn && player.hand.size() > 0 ) {
+            return true;
+        }
+        else {
+            return false;
+        }
+    }
+
     //Reveals all face down spell cards on a given player
     public void revealCards(FighterCard f, int idx){
         for(int i = 0; i < f.spells.size(); i++){
