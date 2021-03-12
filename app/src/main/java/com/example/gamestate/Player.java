@@ -10,8 +10,6 @@ public class Player{
     protected String name;
     protected int coins;
     protected ArrayList<Integer> bets;
-    //What does this do??
-    //protected int playerTurn;
     public boolean isTheirTurn;
     public ArrayList<SpellCard> hand;
 

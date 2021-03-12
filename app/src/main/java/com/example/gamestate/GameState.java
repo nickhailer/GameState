@@ -34,6 +34,53 @@ public class GameState {
         this.discardPile = discardPile;
     }
 
+    public boolean placeBet(Player player) {
+        if(player.isTheirTurn && player.bets.size() <= 3) {
+            return true;
+        }
+        else {
+            return false;
+        }
+    }
+
+    public boolean playSpellCard(Player player, SpellCard sc) {
+        if(player.isTheirTurn && player.hand.contains(sc)) {
+            return true;
+        }
+        else {
+            return false;
+        }
+    }
+
+    public boolean pass(Player player) {
+        if(player.isTheirTurn) {
+            return true;
+        }
+        else {
+            return false;
+        }
+    }
+
+    public boolean discardCards(Player player) {
+        // If it's players turn and its during the setup phase
+        // then they can discard cards
+        if(player.isTheirTurn && playerTurn == -1) {
+            return true;
+        }
+        else {
+            return false;
+        }
+    }
+
+    public boolean detectMagic(Player player) {
+        if(player.isTheirTurn && player.hand.size() > 0 ) {
+            return true;
+        }
+        else {
+            return false;
+        }
+    }
+
     public FighterCard drawFighterCard() { return fighterDeck.remove(randGen.nextInt(fighterDeck.size())); }
 
     public SpellCard drawSpellCard(){
