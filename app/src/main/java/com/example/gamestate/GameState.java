@@ -61,8 +61,8 @@ public class GameState {
             origFighter = original.fighters.get(i);
 
             //Initializes the new fighter
-            newFighter = new FighterCard(origFighter.name, original.players.size(), origFighter.power,
-                    origFighter.prizeMoney, origFighter.isUndead);
+            newFighter = new FighterCard(origFighter.name, original.players.size(),
+                    origFighter.power, origFighter.prizeMoney, origFighter.isUndead);
 
             //Iterates through each spell on the original fighter
             for(int j = 0; j < origFighter.spells.size(); j++){
@@ -70,15 +70,15 @@ public class GameState {
 
                 //Attaches face up spells regularly
                 if(attSpell.isFaceUp.get(idx)){
-                    newFighter.spells.add(new SpellCard(attSpell.name, new ArrayList<Boolean>() {{ add(true); }},
-                            attSpell.mana, attSpell.powerMod, attSpell.cardText, attSpell.spellType,
-                            attSpell.isForbidden));
+                    newFighter.spells.add(new SpellCard(attSpell.name,
+                            new ArrayList<Boolean>() {{ add(true); }}, attSpell.mana, attSpell.powerMod,
+                            attSpell.cardText, attSpell.spellType, attSpell.isForbidden));
                 }
 
                 //Attaches face down spells with a placeholder obj
                 else{
-                    newFighter.spells.add(new SpellCard("Unknown", new ArrayList<Boolean>() {{ add(false); }},
-                            0, 0, "", ' ', false));
+                    newFighter.spells.add(new SpellCard("Unknown",
+                            new ArrayList<Boolean>() {{ add(false); }},0, 0, "", ' ', false));
                 }
             }
 
@@ -87,8 +87,8 @@ public class GameState {
         }
 
         //Initializes the new judge
-        judge = new JudgeCard(original.judge.name, original.players.size(), original.judge.manaLimit,
-                original.judge.judgementType, new ArrayList<Character>());
+        judge = new JudgeCard(original.judge.name, original.players.size(),
+                original.judge.manaLimit, original.judge.judgementType, new ArrayList<Character>());
         //Copies over the disallowedSpells array to the new judge
         for(int i = 0; i < original.judge.disallowedSpells.size(); i++){
             judge.disallowedSpells.add(original.judge.disallowedSpells.get(i));
@@ -122,9 +122,9 @@ public class GameState {
                 //Adds your player's spell cards to their hand
                 for(int j = 0; j < origPlayer.hand.size(); i++){
                     origSpell = origPlayer.hand.get(i);
-                    newPlayer.hand.add(new SpellCard(origSpell.name, new ArrayList<Boolean>() {{ add(true); }},
-                            origSpell.mana, origSpell.powerMod, origSpell.cardText, origSpell.spellType,
-                            origSpell.isForbidden, origSpell.targetType));
+                    newPlayer.hand.add(new SpellCard(origSpell.name,
+                            new ArrayList<Boolean>() {{ add(true); }}, origSpell.mana, origSpell.powerMod,
+                            origSpell.cardText, origSpell.spellType, origSpell.isForbidden, origSpell.targetType));
                 }
             }
 
@@ -195,7 +195,8 @@ public class GameState {
                         new ArrayList<Character>()));
                 //Copies the characters from the disallowedSpells array
                 for(int j = 0; j < ((JudgeCard) discardedCard).disallowedSpells.size(); j++){
-                    ((JudgeCard) discardPile.get(i)).disallowedSpells.add(((JudgeCard) discardedCard).disallowedSpells.get(j));
+                    ((JudgeCard) discardPile.get(i)).disallowedSpells.add(((JudgeCard) discardedCard)
+                            .disallowedSpells.get(j));
                 }
             }
         }
@@ -203,127 +204,127 @@ public class GameState {
     }
 
     public String toString(){
-        String s = "";
+        String string = "";
 
         //Prints the current round of the game
-        s += "It is round " + roundNum + " and ";
+        string += "It is round " + roundNum + " and ";
         if(playerTurn == -1){
-            s += "the players are currently placing their bets.\n";
+            string += "the players are currently placing their bets.\n";
         }
         else if(playerTurn == -2){
-            s += "the players are currently deciding which cards to discard.\n";
+            string += "the players are currently deciding which cards to discard.\n";
         }
         else{
-            s += "it is currently " + players.get(playerTurn).name + "'s turn";
+            string += "it is currently " + players.get(playerTurn).name + "'s turn";
         }
-        s += "\n";
+        string += "\n";
 
         //Prints information about the fighters currently in play
-        FighterCard f;
+        FighterCard fighter;
         for(int i = 0; i < 5; i++){
-            f = fighters.get(i);
-            s += f.name + " has a power of " + f.power + " and has a prize of " + f.prizeMoney + ".\n" +
-                    "They also have the following spells attached to them: ";
-            if(f.spells.size() == 0){
-                s += "Nothing\n";
+            fighter = fighters.get(i);
+            string += fighter.name + " has a power of " + fighter.power + " and has a prize of " +
+                    fighter.prizeMoney + ".\n" + "They also have the following spells attached to them: ";
+            if(fighter.spells.size() == 0){
+                string += "Nothing\n";
             }
-            for(int j = 0; j < f.spells.size(); j++){
-                s += f.spells.get(j).name + ", ";
-                if(j == f.spells.size() - 1){
-                    s += ".\n";
+            for(int j = 0; j < fighter.spells.size(); j++){
+                string += fighter.spells.get(j).name + ", ";
+                if(j == fighter.spells.size() - 1){
+                    string += ".\n";
                 }
                 else{
-                    s += ", ";
+                    string += ", ";
                 }
             }
         }
-        s += "\n";
+        string += "\n";
 
         //Prints information about the judge currently in play
-        s += "The judge currently in play is " + judge.name + ", they have a mana limit of " + judge.manaLimit +
-                ", and their judgement type is ";
+        string += "The judge currently in play is " + judge.name + ", they have a mana limit of " +
+                judge.manaLimit + ", and their judgement type is ";
         if(judge.judgementType == 'd'){
-            s += "dispel";
+            string += "dispel";
         }
         else if(judge.judgementType == 'e'){
-            s += "eject";
+            string += "eject";
         }
-        s += ".\n The spell types they disallow are: ";
+        string += ".\n The spell types they disallow are: ";
         for(int i = 0; i < judge.disallowedSpells.size(); i++){
             if(i == judge.disallowedSpells.size() - 1){
-                s += "and ";
+                string += "and ";
             }
             if(judge.disallowedSpells.get(i) == 'd'){
-                s += "direct";
+                string += "direct";
             }
             else if(judge.disallowedSpells.get(i) == 'e'){
-                s += "enchant";
+                string += "enchant";
             }
             else if(judge.disallowedSpells.get(i) == 's'){
-                s += "support";
+                string += "support";
             }
             else if(judge.disallowedSpells.get(i) == 'f'){
-                s += "forbidden";
+                string += "forbidden";
             }
             if(i == judge.disallowedSpells.size() - 1){
-                s += ".\n";
+                string += ".\n";
             }
             else {
-                s += ", ";
+                string += ", ";
             }
         }
-        s += "\n";
+        string += "\n";
 
         //Prints information about each player
-        Player p;
+        Player player;
         for(int i = 0; i < players.size(); i++){
-            p = players.get(i);
-            s += p.name + " has " + p.coins + " coins and bet on the ";
-            if(p.bets.size() == 0){
-                s += "Nothing\n";
+            player = players.get(i);
+            string += player.name + " has " + player.coins + " coins and bet on the ";
+            if(player.bets.size() == 0){
+                string += "Nothing\n";
             }
-            for(int j = 0; j < p.bets.size(); j++){
-                s += fighters.get(j).name;
-                if(j == p.bets.size() - 1){
-                    s += ".\n";
+            for(int j = 0; j < player.bets.size(); j++){
+                string += fighters.get(j).name;
+                if(j == player.bets.size() - 1){
+                    string += ".\n";
                 }
                 else{
-                    s += ", ";
+                    string += ", ";
                 }
             }
 
-            s += "In their hand they have the following spells: ";
-            if(p.hand.size() == 0){
-                s += "Nothing\n";
+            string += "In their hand they have the following spells: ";
+            if(player.hand.size() == 0){
+                string += "Nothing\n";
             }
-            for(int j = 0; j < p.hand.size(); j++){
-                s += p.hand.get(j).name;
-                if(j == p.hand.size() - 1){
-                    s += ".\n";
+            for(int j = 0; j < player.hand.size(); j++){
+                string += player.hand.get(j).name;
+                if(j == player.hand.size() - 1){
+                    string += ".\n";
                 }
                 else{
-                    s += ", ";
+                    string += ", ";
                 }
             }
         }
-        s += "\n";
+        string += "\n";
 
         //Prints the cards in the discard pile
-        s += "The discard pile has the following cards: ";
+        string += "The discard pile has the following cards: ";
         if(discardPile.size() == 0){
-            s += "Nothing\n";
+            string += "Nothing\n";
         }
         for(int i = 0; i < discardPile.size(); i++){
-            s += discardPile.get(i).name;
+            string += discardPile.get(i).name;
             if(i == discardPile.size() - 1){
-                s += ".\n";
+                string += ".\n";
             }
             else{
-                s += ", ";
+                string += ", ";
             }
         }
 
-        return s;
+        return string;
     }
 
     public boolean placeBets(int idx, ArrayList<Integer> bets) {
@@ -550,7 +551,9 @@ public class GameState {
         }
     }
 
-    public FighterCard drawFighterCard() { return this.decks.fighterCards.remove(randGen.nextInt(this.decks.fighterCards.size())); }
+    public FighterCard drawFighterCard() {
+        return this.decks.fighterCards.remove(randGen.nextInt(this.decks.fighterCards.size()));
+    }
 
     public SpellCard drawSpellCard(){
         return this.decks.spellCards.remove(randGen.nextInt(this.decks.spellCards.size()));

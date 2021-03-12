@@ -33,10 +33,8 @@ public class Cards {
         faceUp.add(false);
 
         // Creating Spell Cards
-        //public SpellCard(String name, ArrayList<Boolean> isFaceUp, int mana, int powerMod, String cardText,char spellType, boolean isForbidden){
         spellCards.add(new SpellCard("Blizzard", faceUp, 4, -6, "", 'd', false));
         spellCards.add(new SpellCard("Might", faceUp, 4, 5, "", 'e', false));
-        //spellCards.add(new SpellCard("Duplicate", faceUp, 0, 0, "Enduring/Spell: Target spell has its effect doubled. Mana does not double", 's', false));
         spellCards.add(new SpellCard("Mana Seal", faceUp, -5, 0, "", 'e', false));
         spellCards.add(new SpellCard("Magic Missile", faceUp, 0, -2, "", 'd', false));
         spellCards.add(new SpellCard("Giant Growth", faceUp, 0, 12, "", 'e', true));
@@ -49,7 +47,6 @@ public class Cards {
         disallowedSpells.add('d');
 
         // Creating Judge Cards
-        //JudgeCard(String name, int numPlayers, int manaLimit, String judgementType, ArrayList<Character> disallowedSpells){
         judgeCards.add(new JudgeCard("Adoth", numPlayers, 10, 'e', disallowedSpells));
         judgeCards.add(new JudgeCard("Morla", numPlayers, 12, 'd', disallowedSpells));
         judgeCards.add(new JudgeCard("Orlair", numPlayers, 12, 'e', disallowedSpells));

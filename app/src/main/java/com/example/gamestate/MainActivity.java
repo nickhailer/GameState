@@ -32,11 +32,12 @@ public class MainActivity extends AppCompatActivity {
         display.setText("");
 
         Button runTest = (Button)findViewById(R.id.runTestButton);
-        runTest.setOnClickListener(new View.OnClickListener(){
+        runTest.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 display.setText("");
-                String gameInfo = firstInstance.toString() + secondInstance.toString() + thirdInstance.toString() + fourthInstance.toString();
+                String gameInfo = firstInstance.toString() + secondInstance.toString()
+                        + thirdInstance.toString() + fourthInstance.toString();
                 display.setText(gameInfo);
             }
         });
